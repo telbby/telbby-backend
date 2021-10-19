@@ -4,6 +4,9 @@ import morgan from 'morgan';
 
 import config from '../config';
 import routes from '../api';
+import ErrorResponse from '../utils/error-response';
+import errorHandler from '../api/middlewares/error';
+import { commonError } from '../constants/error';
 
 export default (app: Application): void => {
   app.use(express.json());
@@ -14,7 +17,8 @@ export default (app: Application): void => {
 
   app.use(config.api.prefix, routes);
 
-  app.all('*', (req, res, _next) => {
-    res.status(404).send('404');
+  app.all('*', (_req, _res, next) => {
+    next(new ErrorResponse(commonError.notFound));
   });
+  app.use(errorHandler);
 };
