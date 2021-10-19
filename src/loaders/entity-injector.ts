@@ -1,7 +1,7 @@
 import { ObjectLiteral } from 'typeorm';
-import dependencyInjector, { DependencyInfo } from './dependency-injector';
 
 import UserEntity from '../entity/user';
+import dependencyInjector, { DependencyInfo } from './dependency-injector';
 
 const entityInjector = () => {
   const entities: DependencyInfo<ObjectLiteral>[] = [

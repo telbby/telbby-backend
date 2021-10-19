@@ -1,6 +1,6 @@
+import * as typedi from 'typedi';
 import { createConnection, useContainer } from 'typeorm';
 import { Container } from 'typeorm-typedi-extensions';
-import * as typedi from 'typedi';
 
 const connect = async () => {
   useContainer(Container);

@@ -1,12 +1,12 @@
-import express, { Application } from 'express';
 import cors from 'cors';
+import express, { Application } from 'express';
 import morgan from 'morgan';
 
-import config from '../config';
 import routes from '../api';
-import ErrorResponse from '../utils/error-response';
 import errorHandler from '../api/middlewares/error';
+import config from '../config';
 import { commonError } from '../constants/error';
+import ErrorResponse from '../utils/error-response';
 
 export default (app: Application): void => {
   app.use(express.json());

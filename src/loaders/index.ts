@@ -1,8 +1,9 @@
 import 'reflect-metadata';
-import connect from './connect';
-import entityInjector from './entity-injector';
+
 import { Application } from 'express';
 
+import connect from './connect';
+import entityInjector from './entity-injector';
 import expressLoader from './express';
 
 export default async (app: Application) => {

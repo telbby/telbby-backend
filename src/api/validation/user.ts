@@ -1,8 +1,8 @@
-import { Request, Response, NextFunction } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import Joi from 'joi';
 
-import ErrorResponse from '../../utils/error-response';
 import { commonError } from '../../constants/error';
+import ErrorResponse from '../../utils/error-response';
 
 export const userTestValidation = (req: Request, res: Response, next: NextFunction) => {
   try {
