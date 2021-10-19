@@ -3,17 +3,16 @@ import express, { Application } from 'express';
 import config from './config';
 import loadApp from './loaders';
 
-const startServer = () => {
+const startServer = async () => {
   const app: Application = express();
 
-  loadApp(app);
+  await loadApp(app);
   app.listen(config.port);
 };
 
-try {
-  startServer();
-  console.info(`Server Run on ${config.port}`);
-} catch (err) {
-  console.error('Server Run Failed');
-  process.exit(1);
-}
+startServer()
+  .then(() => console.log(`Server Run on ${config.port}`))
+  .catch(() => {
+    console.error('Server Run Failed');
+    process.exit(1);
+  });
