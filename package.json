@@ -9,9 +9,8 @@
   "scripts": {
     "lint": "eslint ./src --ext .ts",
     "lint:fix": "eslint ./src --ext .ts --fix",
-    "start": "nodemon src/app.ts",
-    "build": "tsc",
-    "deploy": "ts-node dist/app.js"
+    "dev": "env-cmd -f .env.dev nodemon --exec ts-node src/app.ts",
+    "start": "env-cmd ts-node src/app.ts"
   },
   "dependencies": {
     "cors": "^2.8.5",
@@ -24,6 +23,7 @@
     "@types/morgan": "^1.9.3",
     "@typescript-eslint/eslint-plugin": "^5.0.0",
     "@typescript-eslint/parser": "^5.0.0",
+    "env-cmd": "^10.1.0",
     "eslint": "^8.0.1",
     "eslint-config-airbnb-typescript": "^14.0.1",
     "eslint-config-prettier": "^8.3.0",
