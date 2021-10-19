@@ -18,7 +18,9 @@
     "morgan": "^1.10.0",
     "mysql2": "^2.3.2",
     "reflect-metadata": "^0.1.13",
-    "typeorm": "^0.2.38"
+    "typedi": "^0.10.0",
+    "typeorm": "^0.2.38",
+    "typeorm-typedi-extensions": "^0.4.1"
   },
   "devDependencies": {
     "@types/cors": "^2.8.12",
