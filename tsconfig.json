@@ -1,19 +1,18 @@
 {
   "compilerOptions": {
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
+    "lib": ["es5", "es6"],
     "target": "es5",
     "module": "commonjs",
-    "sourceMap": true,
+    "moduleResolution": "node",
     "outDir": "./dist",
     "strict": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "sourceMap": true,
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "strictPropertyInitialization": false,
-    "moduleResolution": "node",
-    "baseUrl": ".",
-    "paths": {}
+    "strictPropertyInitialization": false
   }
 }
