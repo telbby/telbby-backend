@@ -1,7 +1,7 @@
 ---
 name: Bug report
 about: 버그 발생 관련 이슈 발행
-title: "[BUG] "
+title: ''
 labels: bug
 assignees: ''
 

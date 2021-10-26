@@ -1,7 +1,7 @@
 ---
 name: Feature request
 about: 프로젝트 기능 개발 관련 이슈 발행
-title: "[FEATURE] "
+title: ''
 labels: feature
 assignees: ''
 
