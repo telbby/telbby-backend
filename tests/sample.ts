@@ -4,7 +4,7 @@
  * tests 디렉토리에는 테스트 코드들만 위치시키도록 합니다.
  */
 
-function add(a: number, b: number) {
+function add(a: number, b: number): number {
   return a + b;
 }
 
