@@ -1,15 +1,27 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 
 @Entity({ name: 'user' })
 class UserEntity {
   @PrimaryGeneratedColumn()
-  id: number;
+  idx: number;
 
-  @Column({ length: 20 })
-  name: string;
+  @Column({ length: 45 })
+  id: string;
 
-  @Column()
-  age: number;
+  @Column('text')
+  password: string;
+
+  @CreateDateColumn({ type: 'timestamp' })
+  createdAt: Date;
+
+  @UpdateDateColumn({ type: 'timestamp' })
+  updatedAt: Date;
 }
 
 export default UserEntity;
