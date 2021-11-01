@@ -14,9 +14,9 @@ class UserService {
     this.userRepository = userRepository;
   }
 
-  async getUser(id: number): Promise<UserEntity> {
+  async getUser(idx: number): Promise<UserEntity> {
     try {
-      const user = await this.userRepository.findById(id);
+      const user = await this.userRepository.findByIdx(idx);
       if (!user) {
         throw new ErrorResponse(commonError.unauthorized);
       }
