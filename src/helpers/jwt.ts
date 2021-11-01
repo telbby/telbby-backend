@@ -2,6 +2,9 @@ import jwt, { Algorithm, JwtPayload, SignOptions } from 'jsonwebtoken';
 
 import config from '../config';
 
+const IS_ACCESS_TOKEN = true;
+const IS_REFRESH_TOKEN = false;
+
 export enum JwtToken {
   Access = 'ACCESS_TOKEN',
   Refresh = 'REFRESH_TOKEN',
@@ -44,29 +47,31 @@ export const convertStringToJwtAlgorithm = (algorithm: string): Algorithm => {
 type AccessTokenGeneratorFunctionType = ({ idx, id }: AccessJwtPayload) => string;
 type RefreshTokenGeneratorFunctionType = ({ idx }: RefreshJwtPayload) => string;
 
-const createTokenGenerator = (
-  subject: string,
+const createAccessOrRefreshTokenGenerator = (
+  isAccessToken: boolean,
   expiresIn: number,
 ): AccessTokenGeneratorFunctionType | RefreshTokenGeneratorFunctionType => {
   const algorithm = convertStringToJwtAlgorithm(config.jwt.algorithm);
-  const jwtOption: SignOptions = { algorithm, expiresIn, subject };
+  const jwtOption: SignOptions = {
+    algorithm,
+    expiresIn,
+    subject: isAccessToken ? JwtToken.Access : JwtToken.Refresh,
+  };
 
-  if (subject === JwtToken.Access) {
+  if (isAccessToken) {
     return ({ idx, id }: AccessJwtPayload) => jwt.sign({ idx, id }, config.jwt.secret, jwtOption);
   }
-  if (subject === JwtToken.Refresh) {
-    return ({ idx }: RefreshJwtPayload) => jwt.sign({ idx }, config.jwt.secret, jwtOption);
-  }
-  return () => jwt.sign({}, config.jwt.secret, jwtOption);
+
+  return ({ idx }: RefreshJwtPayload) => jwt.sign({ idx }, config.jwt.secret, jwtOption);
 };
 
-export const generateAccessToken = createTokenGenerator(
-  JwtToken.Access,
+export const generateAccessToken = createAccessOrRefreshTokenGenerator(
+  IS_ACCESS_TOKEN,
   config.jwt.expire.access * 3600,
 ) as AccessTokenGeneratorFunctionType;
 
-export const generateRefreshToken = createTokenGenerator(
-  JwtToken.Refresh,
+export const generateRefreshToken = createAccessOrRefreshTokenGenerator(
+  IS_REFRESH_TOKEN,
   config.jwt.expire.refresh * 3600,
 ) as RefreshTokenGeneratorFunctionType;
 
