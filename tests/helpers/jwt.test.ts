@@ -98,6 +98,17 @@ describe('jwtHelper 모듈 테스트', () => {
     });
   });
 
+  describe('jwtHelper.generateJwtTokens() 함수 테스트', () => {
+    const mockedJwtTokensPayload = { idx: 1, id: 'testID' };
+
+    it('access token과 refresh token을 반환해야 합니다.', () => {
+      const jwtTokens = jwtHelper.generateJwtTokens(mockedJwtTokensPayload);
+
+      expect(jwtTokens.access).not.toBeUndefined();
+      expect(jwtTokens.refresh).not.toBeUndefined();
+    });
+  });
+
   describe('jwtHelper.decodeAccessToken() 함수 테스트', () => {
     const mockedAccessTokenPayload = { idx: 1, id: 'testID' };
     const jwtOption: SignOptions = {

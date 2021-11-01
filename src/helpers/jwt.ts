@@ -7,6 +7,11 @@ export enum JwtToken {
   Refresh = 'REFRESH_TOKEN',
 }
 
+export type OwnJwtPayload = {
+  idx: number;
+  id: string;
+};
+
 export interface AccessJwtPayload extends JwtPayload {
   idx: number;
   id: string;
@@ -64,6 +69,13 @@ export const generateRefreshToken = createTokenGenerator(
   JwtToken.Refresh,
   config.jwt.expire.refresh * 3600,
 ) as RefreshTokenGeneratorFunctionType;
+
+export const generateJwtTokens = (payload: OwnJwtPayload): { access: string; refresh: string } => {
+  const access = generateAccessToken(payload);
+  const refresh = generateRefreshToken(payload);
+
+  return { access, refresh };
+};
 
 const decodeToken = (subject: JwtToken, token: string) => {
   const algorithm = convertStringToJwtAlgorithm(config.jwt.algorithm);
