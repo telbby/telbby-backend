@@ -5,7 +5,7 @@ export interface DependencyInfo<D> {
   dependency: D;
 }
 
-const dependencyInjector = <D = unknown>(dependencies: DependencyInfo<D>[]) => {
+const dependencyInjector = <D = unknown>(dependencies: DependencyInfo<D>[]): void => {
   dependencies.forEach(d => {
     Container.set(d.name, d.dependency);
   });

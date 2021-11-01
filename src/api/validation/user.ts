@@ -3,7 +3,7 @@ import Joi from 'joi';
 
 import ErrorResponse from '../../utils/error-response';
 
-export const userTestValidation = (req: Request, res: Response, next: NextFunction) => {
+export const userTestValidation = (req: Request, res: Response, next: NextFunction): void => {
   const schema = Joi.object({
     id: Joi.number().required().messages({
       'any.required': `아이디를 입력해주세요`,

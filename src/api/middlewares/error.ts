@@ -20,7 +20,12 @@ const createErrorInfoProduction = (err: ErrorResponse) => {
   };
 };
 
-const errorHandler = (err: ErrorResponse, _req: Request, res: Response, _next: NextFunction) => {
+const errorHandler = (
+  err: ErrorResponse,
+  _req: Request,
+  res: Response,
+  _next: NextFunction,
+): void => {
   let errorInfo;
   let errorResponse = err;
   const isDevelopment = process.env.NODE_ENV === 'development';

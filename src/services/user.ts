@@ -1,6 +1,7 @@
 import { Service } from 'typedi';
 import { InjectRepository } from 'typeorm-typedi-extensions';
 
+import UserEntity from '../entity/user';
 import UserRepository from '../repositories/user';
 import ErrorResponse from '../utils/error-response';
 import { commonError } from '../constants/error';
@@ -13,7 +14,7 @@ class UserService {
     this.userRepository = userRepository;
   }
 
-  async getUser(id: number) {
+  async getUser(id: number): Promise<UserEntity> {
     try {
       const user = await this.userRepository.findById(id);
       if (!user) {

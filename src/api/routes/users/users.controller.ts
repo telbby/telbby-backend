@@ -3,7 +3,11 @@ import { Container } from 'typedi';
 
 import UserService from '../../../services/user';
 
-export const handleUserTest = async (req: Request, res: Response, next: NextFunction) => {
+export const handleUserTest = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+): Promise<void> => {
   try {
     const { id } = req.query;
 

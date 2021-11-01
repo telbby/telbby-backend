@@ -6,7 +6,7 @@ import connect from './connect';
 import entityInjector from './entity-injector';
 import expressLoader from './express';
 
-export default async (app: Application) => {
+export default async (app: Application): Promise<void> => {
   await connect();
   console.info('Database connected');
 
