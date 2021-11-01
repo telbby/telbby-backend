@@ -1,3 +1,4 @@
+import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import express, { Application } from 'express';
 import morgan from 'morgan';
@@ -10,6 +11,7 @@ import ErrorResponse from '../utils/error-response';
 
 export default (app: Application): void => {
   app.use(express.json());
+  app.use(cookieParser());
   app.use(express.urlencoded({ extended: false }));
   app.use(cors(config.corsOptions));
 
