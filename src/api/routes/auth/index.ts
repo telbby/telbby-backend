@@ -1,9 +1,12 @@
 import { Router } from 'express';
 
-import { handleAuthTest } from './auth.controller';
+import { loginValidation, refreshValidation } from '../../validation/auth';
+import { handleLogin, handleLogout, handleRefresh } from './auth.controller';
 
 const router = Router();
 
-router.get('/', handleAuthTest);
+router.post('/login', loginValidation, handleLogin);
+router.get('/refresh', refreshValidation, handleRefresh);
+router.get('/logout', handleLogout);
 
 export default router;
