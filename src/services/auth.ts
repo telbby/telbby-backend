@@ -1,7 +1,7 @@
 import { Service } from 'typedi';
 import { InjectRepository } from 'typeorm-typedi-extensions';
 import { commonError } from '../constants/error';
-import * as hashHelper from '../helpers/hash';
+import { comparePassword } from '../utils/hash';
 import * as jwtHelper from '../helpers/jwt';
 import UserRepository from '../repositories/user';
 import ErrorResponse from '../utils/error-response';
@@ -21,7 +21,7 @@ class AuthService {
         throw new ErrorResponse(commonError.unauthorized);
       }
 
-      const isValid = hashHelper.comparePassword(user.password, password);
+      const isValid = comparePassword(user.password, password);
       if (!isValid) {
         throw new ErrorResponse(commonError.unauthorized);
       }
