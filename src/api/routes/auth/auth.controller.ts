@@ -2,7 +2,7 @@ import { CookieOptions, NextFunction, Request, Response } from 'express';
 import Container from 'typedi';
 
 import { REFRESH_TOKEN_COOKIE_KEY } from '../../../constants/auth';
-import * as jwtHelper from '../../../helpers/jwt';
+import JwtHelper from '../../../helpers/jwt';
 import AuthService from '../../../services/auth';
 
 export type LoginRequestBodyType = { id: string; password: string };
@@ -16,6 +16,7 @@ export const handleLogin = async (
     const { id, password } = req.body as LoginRequestBodyType;
 
     const authServiceInstance = Container.get(AuthService);
+    const jwtHelper = Container.get<JwtHelper>('jwtHelper');
 
     const { access, refresh } = await authServiceInstance.login(id, password);
 
