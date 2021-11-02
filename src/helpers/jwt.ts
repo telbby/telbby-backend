@@ -7,10 +7,8 @@ export type JwtOptions = {
   refreshExpiresInHour: number;
 };
 
-export enum JwtToken {
-  Access = 'ACCESS_TOKEN',
-  Refresh = 'REFRESH_TOKEN',
-}
+export const ACCESS_TOKEN_SUBJECT = 'ACCESS_TOKEN';
+export const REFRESH_TOKEN_SUBJECT = 'REFRESH_TOKEN';
 
 export interface OwnAccessJwtPayload {
   idx: number;
@@ -45,7 +43,7 @@ class JwtHelper {
     const jwtOptions: SignOptions = {
       algorithm: this.algorithm,
       expiresIn: this.accessExpiresInSeconds,
-      subject: JwtToken.Access,
+      subject: ACCESS_TOKEN_SUBJECT,
     };
 
     return jwt.sign({ idx, id }, this.secret, jwtOptions);
@@ -55,7 +53,7 @@ class JwtHelper {
     const jwtOptions: SignOptions = {
       algorithm: this.algorithm,
       expiresIn: this.refreshExpiresInSeconds,
-      subject: JwtToken.Refresh,
+      subject: REFRESH_TOKEN_SUBJECT,
     };
 
     return jwt.sign({ idx }, this.secret, jwtOptions);
@@ -77,11 +75,11 @@ class JwtHelper {
   }
 
   decodeAccessToken(token: string): AccessJwtPayload {
-    return this.decodeJwtToken(token, JwtToken.Access) as AccessJwtPayload;
+    return this.decodeJwtToken(token, ACCESS_TOKEN_SUBJECT) as AccessJwtPayload;
   }
 
   decodeRefreshToken(token: string): RefreshJwtPayload {
-    return this.decodeJwtToken(token, JwtToken.Refresh) as RefreshJwtPayload;
+    return this.decodeJwtToken(token, REFRESH_TOKEN_SUBJECT) as RefreshJwtPayload;
   }
 
   getRefreshExpiresInMs(): number {
