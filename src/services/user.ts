@@ -1,7 +1,6 @@
 import { Service } from 'typedi';
 import { InjectRepository } from 'typeorm-typedi-extensions';
 
-import UserEntity from '../entity/user';
 import UserRepository from '../repositories/user';
 import ErrorResponse from '../utils/error-response';
 import { commonError } from '../constants/error';
@@ -15,13 +14,14 @@ class UserService {
     this.userRepository = userRepository;
   }
 
-  async getUser(idx: number): Promise<UserEntity> {
+  async getUser(idx: number): Promise<{ id: string; createdAt: Date; updatedAt: Date }> {
     try {
       const user = await this.userRepository.findByIdx(idx);
       if (!user) {
         throw new ErrorResponse(commonError.unauthorized);
       }
-      return user;
+      const { id, createdAt, updatedAt } = user;
+      return { id, createdAt, updatedAt };
     } catch (e) {
       if ((e as ErrorResponse)?.isOperational) {
         throw e;
