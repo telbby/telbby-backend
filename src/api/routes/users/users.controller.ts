@@ -9,12 +9,31 @@ export const handleUserTest = async (
   next: NextFunction,
 ): Promise<void> => {
   try {
-    const { id } = req.query;
+    const { idx } = req.query;
 
     const userServiceInstance = Container.get(UserService);
-    const user = await userServiceInstance.getUser(Number(id));
+    const user = await userServiceInstance.getUser(Number(idx));
 
-    res.status(200).json(user);
+    res.json(user);
+  } catch (e) {
+    next(e);
+  }
+};
+
+export type CreateUserRequestBodyType = { id: string; password: string };
+
+export const handleCreateUser = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+): Promise<void> => {
+  try {
+    const { id, password } = req.body as CreateUserRequestBodyType;
+
+    const userServiceInstance = Container.get(UserService);
+    const { idx, createdAt, updatedAt } = await userServiceInstance.createUser(id, password);
+
+    res.json({ idx, createdAt, updatedAt });
   } catch (e) {
     next(e);
   }

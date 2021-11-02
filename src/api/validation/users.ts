@@ -3,10 +3,10 @@ import Joi from 'joi';
 
 import ErrorResponse from '../../utils/error-response';
 
-export const userTestValidation = (req: Request, res: Response, next: NextFunction): void => {
+export const userTestValidation = (req: Request, _res: Response, next: NextFunction): void => {
   const schema = Joi.object({
-    id: Joi.number().required().messages({
-      'any.required': `아이디를 입력해주세요`,
+    idx: Joi.number().required().messages({
+      'any.required': `사용자 고유번호를 입력해주세요`,
     }),
   });
 
