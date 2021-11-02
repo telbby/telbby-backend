@@ -13,6 +13,16 @@ class UserRepository extends Repository<UserEntity> {
     const user = await this.findOne({ where: { id } });
     return user;
   }
+
+  async addItem(id: string, password: string): Promise<UserEntity> {
+    const newUser = new UserEntity();
+    newUser.id = id;
+    newUser.password = password;
+
+    const createdUser = await this.save(newUser);
+
+    return createdUser;
+  }
 }
 
 export default UserRepository;

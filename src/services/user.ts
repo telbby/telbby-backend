@@ -5,6 +5,7 @@ import UserEntity from '../entity/user';
 import UserRepository from '../repositories/user';
 import ErrorResponse from '../utils/error-response';
 import { commonError } from '../constants/error';
+import * as hashHelper from '../helpers/hash';
 
 @Service()
 class UserService {
@@ -22,6 +23,26 @@ class UserService {
       }
       return user;
     } catch (e) {
+      throw new ErrorResponse(commonError.wrong);
+    }
+  }
+
+  async createUser(
+    id: string,
+    password: string,
+  ): Promise<{ idx: number; createdAt: Date; updatedAt: Date }> {
+    try {
+      const alreadyRegisteredUser = await this.userRepository.findById(id);
+      if (alreadyRegisteredUser) {
+        throw new ErrorResponse(commonError.conflict);
+      }
+
+      const hashedPassword = hashHelper.generateHash(password);
+      const createdUser = await this.userRepository.addItem(id, hashedPassword);
+      const { idx, createdAt, updatedAt } = createdUser;
+      return { idx, createdAt, updatedAt };
+    } catch (e) {
+      console.error(e);
       throw new ErrorResponse(commonError.wrong);
     }
   }
