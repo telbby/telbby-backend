@@ -11,7 +11,7 @@ export const handleLogin = async (
   req: Request,
   res: Response,
   next: NextFunction,
-): Promise<Response> => {
+): Promise<void> => {
   try {
     const { id, password } = req.body as LoginRequestBodyType;
 
@@ -27,10 +27,9 @@ export const handleLogin = async (
     };
     res.cookie(REFRESH_TOKEN_COOKIE_KEY, refresh, refreshTokenCookieOptions);
 
-    return res.status(200).json({ access });
+    res.status(200).json({ access });
   } catch (e) {
     next(e);
-    return res;
   }
 };
 
