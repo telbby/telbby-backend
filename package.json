@@ -14,9 +14,9 @@
     "prettier:write": "yarn prettier --write .",
     "prepare": "husky install",
     "precommit": "yarn lint-staged",
-    "test": "env-cmd -f .env.dev jest",
-    "test:watch": "env-cmd -f .env.dev jest --watchAll",
-    "test:coverage": "env-cmd -f .env.dev jest --coverage"
+    "test": "jest",
+    "test:watch": "jest --watchAll",
+    "test:coverage": "jest --coverage"
   },
   "dependencies": {
     "bcrypt": "^5.0.1",
