@@ -24,8 +24,8 @@ export const loginValidation = (req: Request, _res: Response, next: NextFunction
         'any.required': `아이디를 입력해주세요`,
       }),
     password: Joi.string()
-      .max(USER_PW_MIN_LENGTH)
-      .min(USER_PW_MAX_LENGTH)
+      .min(USER_PW_MIN_LENGTH)
+      .max(USER_PW_MAX_LENGTH)
       .required()
       .empty('')
       .messages({
