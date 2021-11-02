@@ -27,7 +27,7 @@ export const handleLogin = async (
     };
     res.cookie(REFRESH_TOKEN_COOKIE_KEY, refresh, refreshTokenCookieOptions);
 
-    res.status(200).json({ access });
+    res.json({ access });
   } catch (e) {
     next(e);
   }
@@ -57,7 +57,7 @@ export const handleRefresh = async (
 
     const { access } = await authServiceInstance.refreshAccessToken(refreshToken);
 
-    res.status(200).json({ access });
+    res.json({ access });
   } catch (e) {
     next(e);
   }
