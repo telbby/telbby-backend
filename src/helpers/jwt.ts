@@ -1,14 +1,13 @@
 import jwt, { Algorithm, JwtPayload, SignOptions } from 'jsonwebtoken';
 
+import { ACCESS_TOKEN_SUBJECT, REFRESH_TOKEN_SUBJECT } from '../constants/auth';
+
 export type JwtOptions = {
   algorithm: Algorithm;
   secret: string;
   accessExpiresInHour: number;
   refreshExpiresInHour: number;
 };
-
-export const ACCESS_TOKEN_SUBJECT = 'ACCESS_TOKEN';
-export const REFRESH_TOKEN_SUBJECT = 'REFRESH_TOKEN';
 
 export interface OwnAccessJwtPayload {
   idx: number;
