@@ -29,6 +29,9 @@ class AuthService {
       const tokens = jwtHelper.generateJwtTokens(user);
       return tokens;
     } catch (e) {
+      if ((e as ErrorResponse)?.isOperational) {
+        throw e;
+      }
       console.error(e);
       throw new ErrorResponse(commonError.wrong);
     }
@@ -50,6 +53,9 @@ class AuthService {
       const access = jwtHelper.generateAccessToken(user);
       return { access };
     } catch (e) {
+      if ((e as ErrorResponse)?.isOperational) {
+        throw e;
+      }
       console.error(e);
       throw new ErrorResponse(commonError.wrong);
     }

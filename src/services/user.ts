@@ -23,6 +23,9 @@ class UserService {
       }
       return user;
     } catch (e) {
+      if ((e as ErrorResponse)?.isOperational) {
+        throw e;
+      }
       throw new ErrorResponse(commonError.wrong);
     }
   }
@@ -42,6 +45,9 @@ class UserService {
       const { idx, createdAt, updatedAt } = createdUser;
       return { idx, createdAt, updatedAt };
     } catch (e) {
+      if ((e as ErrorResponse)?.isOperational) {
+        throw e;
+      }
       console.error(e);
       throw new ErrorResponse(commonError.wrong);
     }
