@@ -5,6 +5,7 @@ import UserRepository from '../repositories/user';
 import ErrorResponse from '../utils/error-response';
 import { commonError } from '../constants/error';
 import { generateHash } from '../utils/hash';
+import { UpdateInfo } from '../types';
 
 @Service()
 class UserService {
@@ -14,7 +15,7 @@ class UserService {
     this.userRepository = userRepository;
   }
 
-  async getUser(idx: number): Promise<{ id: string; createdAt: Date; updatedAt: Date }> {
+  async getUser(idx: number): Promise<{ id: string } & UpdateInfo> {
     try {
       const user = await this.userRepository.findByIdx(idx);
       if (!user) {
@@ -30,10 +31,7 @@ class UserService {
     }
   }
 
-  async createUser(
-    id: string,
-    password: string,
-  ): Promise<{ idx: number; createdAt: Date; updatedAt: Date }> {
+  async createUser(id: string, password: string): Promise<{ idx: number } & UpdateInfo> {
     try {
       const alreadyRegisteredUser = await this.userRepository.findById(id);
       if (alreadyRegisteredUser) {
