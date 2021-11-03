@@ -2,7 +2,7 @@ import { Algorithm } from 'jsonwebtoken';
 
 import { getJwtAlgorithm } from '../../src/utils/jwt';
 
-describe('hash utils 테스트', () => {
+describe('jwt utils 테스트', () => {
   describe('getJwtAlgorithm() 함수 테스트', () => {
     it('허용된 알고리즘의 경우, 그대로 반환해야 합니다.', () => {
       const jwtAlgorithms: Algorithm[] = [
