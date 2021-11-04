@@ -4,8 +4,7 @@ import Container from 'typedi';
 import { REFRESH_TOKEN_COOKIE_KEY } from '../../../constants/auth';
 import JwtHelper from '../../../helpers/jwt';
 import AuthService from '../../../services/auth';
-
-export type LoginRequestBodyType = { id: string; password: string };
+import { LoginRequestBody, RefreshRequestCookiesType } from '../../../types';
 
 export const handleLogin = async (
   req: Request,
@@ -13,7 +12,7 @@ export const handleLogin = async (
   next: NextFunction,
 ): Promise<void> => {
   try {
-    const { id, password } = req.body as LoginRequestBodyType;
+    const { id, password } = req.body as LoginRequestBody;
 
     const authServiceInstance = Container.get(AuthService);
     const jwtHelper = Container.get<JwtHelper>('jwtHelper');
@@ -42,8 +41,6 @@ export const handleLogout = (_req: Request, res: Response, next: NextFunction): 
     next(e);
   }
 };
-
-export type RefreshRequestCookiesType = { [REFRESH_TOKEN_COOKIE_KEY]: string };
 
 export const handleRefresh = async (
   req: Request,
