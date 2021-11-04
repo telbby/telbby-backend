@@ -1,3 +1,5 @@
+import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
+
 export default {
   type: 'mysql',
   host: process.env.DB_HOST,
@@ -15,4 +17,5 @@ export default {
     migrationsDir: 'src/migration',
     subscribersDir: 'src/subscriber',
   },
+  namingStrategy: new SnakeNamingStrategy(),
 };
