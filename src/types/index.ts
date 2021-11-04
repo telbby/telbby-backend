@@ -1,9 +1,9 @@
 import { REFRESH_TOKEN_COOKIE_KEY } from '../constants/auth';
 
-export type UpdateInfo = {
+export interface UpdateInfo {
   createdAt: Date;
   updatedAt: Date;
-};
+}
 
 export interface UserLoginInfo {
   id: string;
