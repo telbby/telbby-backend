@@ -11,8 +11,8 @@ import ErrorResponse from '../../utils/error-response';
 
 export const userTestValidation = (req: Request, _res: Response, next: NextFunction): void => {
   const schema = Joi.object({
-    idx: Joi.number().required().messages({
-      'any.required': `사용자 고유번호를 입력해주세요`,
+    uid: Joi.string().required().messages({
+      'any.required': `사용자 고유코드를 입력해주세요`,
     }),
   });
 
@@ -30,7 +30,7 @@ export const userTestValidation = (req: Request, _res: Response, next: NextFunct
 
 export const userCreateValidation = (req: Request, _res: Response, next: NextFunction): void => {
   const schema = Joi.object({
-    id: Joi.string()
+    userId: Joi.string()
       .min(USER_ID_MIN_LENGTH)
       .max(USER_ID_MAX_LENGTH)
       .required()

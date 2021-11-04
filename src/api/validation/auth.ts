@@ -7,7 +7,7 @@ import ErrorResponse from '../../utils/error-response';
 
 export const loginValidation = (req: Request, _res: Response, next: NextFunction): void => {
   const schema = Joi.object({
-    id: Joi.string().required().empty('').messages({
+    userId: Joi.string().required().empty('').messages({
       'any.required': `아이디를 입력해주세요`,
     }),
     password: Joi.string().required().empty('').messages({
