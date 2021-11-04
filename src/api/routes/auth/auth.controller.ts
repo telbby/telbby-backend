@@ -12,12 +12,12 @@ export const handleLogin = async (
   next: NextFunction,
 ): Promise<void> => {
   try {
-    const { id, password } = req.body as LoginRequestBody;
+    const userLoginInfo = req.body as LoginRequestBody;
 
     const authServiceInstance = Container.get(AuthService);
     const jwtHelper = Container.get<JwtHelper>('jwtHelper');
 
-    const { access, refresh } = await authServiceInstance.login(id, password);
+    const { access, refresh } = await authServiceInstance.login(userLoginInfo);
 
     const refreshTokenExpires = new Date(Date.now() + jwtHelper.getRefreshExpiresInMs());
     const refreshTokenCookieOptions: CookieOptions = {

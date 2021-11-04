@@ -5,6 +5,7 @@ import { comparePassword } from '../utils/hash';
 import JwtHelper from '../helpers/jwt';
 import UserRepository from '../repositories/user';
 import ErrorResponse from '../utils/error-response';
+import { UserLoginInfo } from '../types';
 
 @Service()
 class AuthService {
@@ -20,8 +21,8 @@ class AuthService {
     this.jwtHelper = jwtHelper;
   }
 
-  async login(id: string, password: string): Promise<{ access: string; refresh: string }> {
-    const user = await this.userRepository.findById(id);
+  async login({ userId, password }: UserLoginInfo): Promise<{ access: string; refresh: string }> {
+    const user = await this.userRepository.findByUserId(userId);
     if (!user) {
       throw new ErrorResponse(commonError.unauthorized);
     }
@@ -40,9 +41,9 @@ class AuthService {
       throw new ErrorResponse(commonError.unauthorized);
     }
 
-    const { idx } = this.jwtHelper.decodeRefreshToken(refreshToken);
+    const { uid } = this.jwtHelper.decodeRefreshToken(refreshToken);
 
-    const user = await this.userRepository.findByIdx(idx);
+    const user = await this.userRepository.findByUid(uid);
     if (!user) {
       throw new ErrorResponse(commonError.unauthorized);
     }

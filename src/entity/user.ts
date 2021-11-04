@@ -8,11 +8,11 @@ import {
 
 @Entity({ name: 'user' })
 class UserEntity {
-  @PrimaryGeneratedColumn()
-  idx: number;
+  @PrimaryGeneratedColumn('uuid')
+  uid: string;
 
   @Column({ length: 45 })
-  id: string;
+  userId: string;
 
   @Column('text')
   password: string;

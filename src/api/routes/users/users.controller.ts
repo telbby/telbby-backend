@@ -10,10 +10,10 @@ export const handleUserTest = async (
   next: NextFunction,
 ): Promise<void> => {
   try {
-    const { idx } = req.query;
+    const { uid } = req.query;
 
     const userServiceInstance = Container.get(UserService);
-    const user = await userServiceInstance.getUser(Number(idx));
+    const user = await userServiceInstance.getUser(uid?.toString() ?? '');
 
     res.json(user);
   } catch (e) {
@@ -27,12 +27,12 @@ export const handleCreateUser = async (
   next: NextFunction,
 ): Promise<void> => {
   try {
-    const { id, password } = req.body as CreateUserRequestBody;
+    const userInfoToCreate = req.body as CreateUserRequestBody;
 
     const userServiceInstance = Container.get(UserService);
-    const { idx, createdAt, updatedAt } = await userServiceInstance.createUser(id, password);
+    const { uid, createdAt, updatedAt } = await userServiceInstance.createUser(userInfoToCreate);
 
-    res.json({ idx, createdAt, updatedAt });
+    res.json({ uid, createdAt, updatedAt });
   } catch (e) {
     next(e);
   }

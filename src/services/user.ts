@@ -5,7 +5,7 @@ import UserRepository from '../repositories/user';
 import ErrorResponse from '../utils/error-response';
 import { commonError } from '../constants/error';
 import { generateHash } from '../utils/hash';
-import { UpdateInfo } from '../types';
+import { UpdateInfo, UserInfo } from '../types';
 
 @Service()
 class UserService {
@@ -15,25 +15,27 @@ class UserService {
     this.userRepository = userRepository;
   }
 
-  async getUser(idx: number): Promise<{ id: string } & UpdateInfo> {
-    const user = await this.userRepository.findByIdx(idx);
+  async getUser(uid: string): Promise<{ id: string } & UpdateInfo> {
+    const user = await this.userRepository.findByUid(uid);
     if (!user) {
       throw new ErrorResponse(commonError.unauthorized);
     }
-    const { id, createdAt, updatedAt } = user;
-    return { id, createdAt, updatedAt };
+    const { userId, createdAt, updatedAt } = user;
+    return { id: userId, createdAt, updatedAt };
   }
 
-  async createUser(id: string, password: string): Promise<{ idx: number } & UpdateInfo> {
-    const alreadyRegisteredUser = await this.userRepository.findById(id);
+  async createUser(userInfo: UserInfo): Promise<{ uid: string } & UpdateInfo> {
+    const alreadyRegisteredUser = await this.userRepository.findByUserId(userInfo.userId);
     if (alreadyRegisteredUser) {
       throw new ErrorResponse(commonError.conflict);
     }
 
-    const hashedPassword = generateHash(password);
-    const createdUser = await this.userRepository.createUser(id, hashedPassword);
-    const { idx, createdAt, updatedAt } = createdUser;
-    return { idx, createdAt, updatedAt };
+    const hashedPassword = generateHash(userInfo.password);
+
+    const userInfoToCreate = { ...userInfo, password: hashedPassword };
+    const { uid, createdAt, updatedAt } = await this.userRepository.createUser(userInfoToCreate);
+
+    return { uid, createdAt, updatedAt };
   }
 }
 

@@ -6,9 +6,11 @@ export interface UpdateInfo {
 }
 
 export interface UserLoginInfo {
-  id: string;
+  userId: string;
   password: string;
 }
+
+export type UserInfo = UserLoginInfo;
 
 export interface RefreshCookie {
   [REFRESH_TOKEN_COOKIE_KEY]: string;

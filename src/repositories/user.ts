@@ -1,21 +1,22 @@
 import { EntityRepository, Repository } from 'typeorm';
 
 import UserEntity from '../entity/user';
+import { UserInfo } from '../types';
 
 @EntityRepository(UserEntity)
 class UserRepository extends Repository<UserEntity> {
-  async findByIdx(idx: number): Promise<UserEntity | undefined> {
-    const user = await this.findOne({ where: { idx } });
+  async findByUid(uid: string): Promise<UserEntity | undefined> {
+    const user = await this.findOne({ where: { uid } });
     return user;
   }
 
-  async findById(id: string): Promise<UserEntity | undefined> {
-    const user = await this.findOne({ where: { id } });
+  async findByUserId(userId: string): Promise<UserEntity | undefined> {
+    const user = await this.findOne({ where: { userId } });
     return user;
   }
 
-  async createUser(id: string, password: string): Promise<UserEntity> {
-    const newUser = this.create({ id, password });
+  async createUser(userInfo: UserInfo): Promise<UserEntity> {
+    const newUser = this.create(userInfo);
     const createdUser = await this.save(newUser);
     return createdUser;
   }
