@@ -5,8 +5,8 @@ import { handleLogin, handleLogout, handleRefresh } from './auth.controller';
 
 const router = Router();
 
-router.post('/login', loginValidation, handleLogin);
-router.get('/refresh', refreshValidation, handleRefresh);
-router.get('/logout', handleLogout);
+router.post('/', loginValidation, handleLogin);
+router.get('/', refreshValidation, handleRefresh);
+router.delete('/', handleLogout);
 
 export default router;
