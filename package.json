@@ -30,6 +30,7 @@
     "reflect-metadata": "^0.1.13",
     "typedi": "^0.10.0",
     "typeorm": "^0.2.38",
+    "typeorm-naming-strategies": "^2.0.0",
     "typeorm-typedi-extensions": "^0.4.1"
   },
   "devDependencies": {
