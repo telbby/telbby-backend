@@ -31,7 +31,7 @@ class UserService {
     }
 
     const hashedPassword = generateHash(password);
-    const createdUser = await this.userRepository.addItem(id, hashedPassword);
+    const createdUser = await this.userRepository.createUser(id, hashedPassword);
     const { idx, createdAt, updatedAt } = createdUser;
     return { idx, createdAt, updatedAt };
   }
