@@ -1,6 +1,11 @@
 import jwt, { SignOptions } from 'jsonwebtoken';
 
-import JwtHelper, { JwtOptions } from '../../src/helpers/jwt';
+import JwtHelper, {
+  JwtOptions,
+  OwnAccessJwtPayload,
+  OwnJwtPayload,
+  OwnRefreshJwtPayload,
+} from '../../src/helpers/jwt';
 
 describe('jwtHelper 모듈 테스트', () => {
   const mockJwtOptions: JwtOptions = {
@@ -11,7 +16,7 @@ describe('jwtHelper 모듈 테스트', () => {
   };
 
   describe('jwtHelper.generateAccessToken() 함수 테스트', () => {
-    const mockedAccessTokenPayload = { idx: 1, id: 'testID' };
+    const mockedAccessTokenPayload: OwnAccessJwtPayload = { uid: 'uuid', userId: 'testID' };
 
     it('access token을 반환해야 합니다.', () => {
       const jwtHelper = new JwtHelper(mockJwtOptions);
@@ -29,10 +34,10 @@ describe('jwtHelper 모듈 테스트', () => {
       const decodedAccessToken = jwt.verify(accessToken, mockJwtOptions.secret, {
         algorithms: [mockJwtOptions.algorithm],
         subject: 'ACCESS_TOKEN',
-      }) as { idx: number; id: string };
+      }) as OwnAccessJwtPayload;
 
-      expect(decodedAccessToken.idx).toBe(mockedAccessTokenPayload.idx);
-      expect(decodedAccessToken.id).toBe(mockedAccessTokenPayload.id);
+      expect(decodedAccessToken.uid).toBe(mockedAccessTokenPayload.uid);
+      expect(decodedAccessToken.userId).toBe(mockedAccessTokenPayload.userId);
     });
 
     it('생성된 access token의 subject는 "ACCESS_TOKEN"이어야 합니다.', () => {
@@ -50,7 +55,7 @@ describe('jwtHelper 모듈 테스트', () => {
   });
 
   describe('jwtHelper.generateRefreshToken() 함수 테스트', () => {
-    const mockedRefreshTokenPayload = { idx: 1 };
+    const mockedRefreshTokenPayload: OwnRefreshJwtPayload = { uid: 'uuid' };
 
     it('refresh token을 반환해야 합니다.', () => {
       const jwtHelper = new JwtHelper(mockJwtOptions);
@@ -68,9 +73,9 @@ describe('jwtHelper 모듈 테스트', () => {
       const decodedRefreshToken = jwt.verify(refreshToken, mockJwtOptions.secret, {
         algorithms: [mockJwtOptions.algorithm],
         subject: 'REFRESH_TOKEN',
-      }) as { idx: number };
+      }) as OwnRefreshJwtPayload;
 
-      expect(decodedRefreshToken.idx).toBe(mockedRefreshTokenPayload.idx);
+      expect(decodedRefreshToken.uid).toBe(mockedRefreshTokenPayload.uid);
     });
 
     it('생성된 refresh token의 subject는 "REFRESH_TOKEN"이어야 합니다.', () => {
@@ -88,7 +93,7 @@ describe('jwtHelper 모듈 테스트', () => {
   });
 
   describe('jwtHelper.generateJwtTokens() 함수 테스트', () => {
-    const mockedJwtTokensPayload = { idx: 1, id: 'testID' };
+    const mockedJwtTokensPayload: OwnJwtPayload = { uid: 'uuid', userId: 'testID' };
 
     it('access token과 refresh token을 반환해야 합니다.', () => {
       const jwtHelper = new JwtHelper(mockJwtOptions);
@@ -101,7 +106,7 @@ describe('jwtHelper 모듈 테스트', () => {
   });
 
   describe('jwtHelper.decodeAccessToken() 함수 테스트', () => {
-    const mockedAccessTokenPayload = { idx: 1, id: 'testID' };
+    const mockedAccessTokenPayload: OwnAccessJwtPayload = { uid: 'uuid', userId: 'testID' };
     const mockAccessTokenOption: SignOptions = {
       algorithm: mockJwtOptions.algorithm,
       expiresIn: mockJwtOptions.accessExpiresInHour,
@@ -131,8 +136,8 @@ describe('jwtHelper 모듈 테스트', () => {
       );
       const decodedAccessToken = jwtHelper.decodeAccessToken(accessToken);
 
-      expect(decodedAccessToken.idx).toBe(mockedAccessTokenPayload.idx);
-      expect(decodedAccessToken.id).toBe(mockedAccessTokenPayload.id);
+      expect(decodedAccessToken.uid).toBe(mockedAccessTokenPayload.uid);
+      expect(decodedAccessToken.userId).toBe(mockedAccessTokenPayload.userId);
     });
 
     it('encode한 subject와 decode하여 얻은 payload의 subject는 같아야 합니다.', () => {
@@ -150,7 +155,7 @@ describe('jwtHelper 모듈 테스트', () => {
   });
 
   describe('jwtHelper.decodeRefreshToken() 함수 테스트', () => {
-    const mockedRefreshTokenPayload = { idx: 1 };
+    const mockedRefreshTokenPayload: OwnRefreshJwtPayload = { uid: 'uuid' };
     const mockRefreshTokenOption: SignOptions = {
       algorithm: mockJwtOptions.algorithm,
       expiresIn: mockJwtOptions.refreshExpiresInHour,
@@ -180,7 +185,7 @@ describe('jwtHelper 모듈 테스트', () => {
       );
       const decodedRefreshToken = jwtHelper.decodeRefreshToken(refreshToken);
 
-      expect(decodedRefreshToken.idx).toBe(mockedRefreshTokenPayload.idx);
+      expect(decodedRefreshToken.uid).toBe(mockedRefreshTokenPayload.uid);
     });
 
     it('encode한 subject와 decode하여 얻은 payload의 subject는 같아야 합니다.', () => {
