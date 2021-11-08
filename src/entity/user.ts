@@ -11,7 +11,7 @@ class UserEntity {
   @PrimaryGeneratedColumn('uuid')
   uid: string;
 
-  @Column({ length: 45 })
+  @Column('varchar', { length: 45, unique: true })
   userId: string;
 
   @Column('text')
