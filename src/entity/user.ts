@@ -11,10 +11,10 @@ class UserEntity {
   @PrimaryGeneratedColumn('uuid')
   uid: string;
 
-  @Column('varchar', { length: 45, unique: true })
+  @Column('varchar', { length: 30, unique: true })
   userId: string;
 
-  @Column('text')
+  @Column('varchar', { length: 35 })
   password: string;
 
   @CreateDateColumn({ type: 'timestamp' })
