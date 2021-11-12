@@ -12,7 +12,8 @@ const startServer = async () => {
 
 startServer()
   .then(() => console.log(`Server Run on ${config.port}`))
-  .catch(() => {
+  .catch(e => {
     console.error('Server Run Failed');
+    console.error(e);
     process.exit(1);
   });
