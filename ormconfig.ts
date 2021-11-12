@@ -1,6 +1,6 @@
-import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
+const SnakeNamingStrategy = require('typeorm-naming-strategies').SnakeNamingStrategy;
 
-export default {
+module.exports = {
   type: 'mysql',
   host: process.env.DB_HOST,
   port: 3306,
@@ -9,9 +9,9 @@ export default {
   database: process.env.DB_NAME,
   synchronize: true,
   logging: false,
-  entities: ['src/entity/**/*.ts'],
-  migrations: ['src/migration/**/*.ts'],
-  subscribers: ['src/subscriber/**/*.ts'],
+  entities: ['src/entity/**/*.{js,ts}'],
+  migrations: ['src/migration/**/*.{js,ts}'],
+  subscribers: ['src/subscriber/**/*.{js,ts}'],
   cli: {
     entitiesDir: 'src/entity',
     migrationsDir: 'src/migration',
