@@ -14,7 +14,7 @@ class UserEntity {
   @Column('varchar', { length: 30, unique: true })
   userId: string;
 
-  @Column('varchar', { length: 35 })
+  @Column('text')
   password: string;
 
   @CreateDateColumn({ type: 'timestamp' })
