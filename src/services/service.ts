@@ -21,6 +21,14 @@ class ServiceService {
     }
     return service;
   }
+
+  async getAllServiceOfUser(uid: string): Promise<{ serviceList: ServiceEntity[]; count: number }> {
+    const result = await this.serviceRepository.findByUserId(uid);
+    return {
+      serviceList: result[0],
+      count: result[1],
+    };
+  }
 }
 
 export default ServiceService;

@@ -8,6 +8,11 @@ class ServiceRepository extends Repository<ServiceEntity> {
     const service = await this.findOne({ where: { id } });
     return service;
   }
+
+  async findByUserId(userId: string): Promise<[ServiceEntity[], number]> {
+    const serviceListAndCount = await this.findAndCount({ where: { user: userId } });
+    return serviceListAndCount;
+  }
 }
 
 export default ServiceRepository;
