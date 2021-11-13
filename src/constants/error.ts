@@ -44,3 +44,10 @@ export const commonError = {
     message: 'Invalid state',
   },
 };
+
+export const authError = {
+  invalidToken: {
+    statusCode: 500,
+    message: 'Invalid token',
+  },
+};

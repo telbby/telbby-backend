@@ -1,4 +1,10 @@
-import { Algorithm } from 'jsonwebtoken';
+import jwt, { Algorithm, VerifyErrors } from 'jsonwebtoken';
+
+import config from '../config';
+import { REFRESH_TOKEN_COOKIE_KEY } from '../constants/auth';
+import { authError } from '../constants/error';
+import { RefreshCookie } from '../types';
+import ErrorResponse from './error-response';
 
 export const getJwtAlgorithm = (algorithm: string): Algorithm => {
   const jwtAlgorithms: Algorithm[] = [
@@ -18,4 +24,37 @@ export const getJwtAlgorithm = (algorithm: string): Algorithm => {
   ];
   const jwtAlgorithm = jwtAlgorithms.find(jwtAlgo => jwtAlgo === algorithm) || 'none';
   return jwtAlgorithm;
+};
+
+export const getAccessToken = (authorization: string | undefined): string => {
+  if (!authorization) return '';
+  return authorization.split('Bearer ')[1];
+};
+
+export const getRefreshToken = (cookies: RefreshCookie): string => {
+  if (!cookies[REFRESH_TOKEN_COOKIE_KEY]) return '';
+  return cookies[REFRESH_TOKEN_COOKIE_KEY];
+};
+
+export const getUIDFromToken = (token: string): string => {
+  const decoded = jwt.decode(token);
+
+  if (!decoded || typeof decoded === 'string') {
+    throw new ErrorResponse(authError.invalidToken);
+  }
+
+  const { uid } = decoded as { uid: string };
+  return uid;
+};
+
+export const checkTokenExpiration = (token: string): Promise<boolean> => {
+  return new Promise((resolve, reject) => {
+    jwt.verify(token, config.jwt.secret, (err: VerifyErrors | null) => {
+      if (err) {
+        if (err.name === 'TokenExpiredError') resolve(true);
+        else reject(err);
+      }
+      resolve(false);
+    });
+  });
 };
