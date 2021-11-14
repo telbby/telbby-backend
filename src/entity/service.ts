@@ -18,7 +18,7 @@ class ServiceEntity {
   @Column('varchar', { length: 45 })
   name: string;
 
-  @Column('char', { length: 20 })
+  @Column('char', { length: 20, unique: true })
   clientId: string;
 
   @Column('varchar', { length: 100, nullable: true })

@@ -5,7 +5,7 @@ class ThemeEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column('varchar', { length: 20 })
+  @Column('varchar', { length: 20, unique: true })
   name: string;
 }
 
