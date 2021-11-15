@@ -27,7 +27,7 @@ export const getJwtAlgorithm = (algorithm: string): Algorithm => {
 };
 
 export const getAccessToken = (authorization: string | undefined): string => {
-  if (authorization && authorization.startsWith('Bearer')) {
+  if (authorization && authorization.startsWith('Bearer ')) {
     return authorization.split(' ')[1];
   }
   return '';
