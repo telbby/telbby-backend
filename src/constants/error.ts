@@ -51,3 +51,10 @@ export const authError = {
     message: 'Invalid token',
   },
 };
+
+export const themeError = {
+  needDefaultTheme: {
+    statusCode: 500,
+    message: 'Should create default theme',
+  },
+};

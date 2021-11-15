@@ -37,3 +37,20 @@ export const handleGetUserServices = async (
     next(e);
   }
 };
+
+export const handleCreateService = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+): Promise<void> => {
+  try {
+    const uid = getUIDFromToken(getAccessToken(req.headers.authorization));
+
+    const serviceServiceInstance = Container.get(ServiceService);
+    const result = await serviceServiceInstance.createService(uid, req.body);
+
+    res.status(200).json(result);
+  } catch (e) {
+    next(e);
+  }
+};

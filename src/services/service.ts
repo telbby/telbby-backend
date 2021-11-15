@@ -1,17 +1,31 @@
 import { Service } from 'typedi';
 import { InjectRepository } from 'typeorm-typedi-extensions';
-import { commonError } from '../constants/error';
+import { commonError, themeError } from '../constants/error';
 import ServiceEntity from '../entity/service';
 
 import ServiceRepository from '../repositories/service';
+import ThemeRepository from '../repositories/theme';
+import UserRepository from '../repositories/user';
+import { UpdateInfo } from '../types';
+import { ServiceBasicInfo } from '../types/service';
 import ErrorResponse from '../utils/error-response';
 
 @Service()
 class ServiceService {
   private serviceRepository: ServiceRepository;
 
-  constructor(@InjectRepository(ServiceRepository) serviceRepository: ServiceRepository) {
+  private userRepository: UserRepository;
+
+  private themeRepository: ThemeRepository;
+
+  constructor(
+    @InjectRepository(ServiceRepository) serviceRepository: ServiceRepository,
+    @InjectRepository(UserRepository) userRepository: UserRepository,
+    @InjectRepository(ThemeRepository) themeRepository: ThemeRepository,
+  ) {
     this.serviceRepository = serviceRepository;
+    this.userRepository = userRepository;
+    this.themeRepository = themeRepository;
   }
 
   async getService(id: number): Promise<ServiceEntity> {
@@ -28,6 +42,27 @@ class ServiceService {
       serviceList: result[0],
       count: result[1],
     };
+  }
+
+  async createService(
+    uid: string,
+    serviceInfo: ServiceBasicInfo,
+  ): Promise<{ id: number } & UpdateInfo> {
+    const theme = await this.themeRepository.findById(1);
+    const user = await this.userRepository.findByUid(uid);
+
+    if (!theme) {
+      throw new ErrorResponse(themeError.needDefaultTheme);
+    }
+
+    if (!user) {
+      throw new ErrorResponse(commonError.unauthorized);
+    }
+
+    const service = await this.serviceRepository.createService(serviceInfo, theme, user);
+
+    const { id, createdAt, updatedAt } = service;
+    return { id, createdAt, updatedAt };
   }
 }
 

@@ -21,3 +21,24 @@ export const serviceIdValidation = (req: Request, _res: Response, next: NextFunc
 
   next();
 };
+
+export const createServiceValidation = (req: Request, _res: Response, next: NextFunction): void => {
+  const schema = Joi.object({
+    name: Joi.string().required().messages({
+      'any.required': '서비스 이름을 입력해주세요',
+    }),
+    description: Joi.string(),
+    domain: Joi.string(),
+  });
+
+  const validationResult = schema.validate(req.body);
+
+  if (validationResult.error) {
+    throw new ErrorResponse({
+      statusCode: 400,
+      message: validationResult.error.message,
+    });
+  }
+
+  next();
+};
