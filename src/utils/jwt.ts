@@ -27,8 +27,10 @@ export const getJwtAlgorithm = (algorithm: string): Algorithm => {
 };
 
 export const getAccessToken = (authorization: string | undefined): string => {
-  if (!authorization) return '';
-  return authorization.split('Bearer ')[1];
+  if (authorization && authorization.startsWith('Bearer')) {
+    return authorization.split(' ')[1];
+  }
+  return '';
 };
 
 export const getRefreshToken = (cookies: RefreshCookie): string => {
