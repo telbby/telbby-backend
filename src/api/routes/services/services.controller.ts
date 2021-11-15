@@ -15,7 +15,7 @@ export const handleGetService = async (
     const serviceServiceInstance = Container.get(ServiceService);
     const service = await serviceServiceInstance.getService(Number(id));
 
-    res.json(service);
+    res.status(200).json(service);
   } catch (e) {
     next(e);
   }
@@ -32,7 +32,7 @@ export const handleGetUserServices = async (
     const serviceServiceInstance = Container.get(ServiceService);
     const result = await serviceServiceInstance.getAllServiceOfUser(uid);
 
-    res.json(result);
+    res.status(200).json(result);
   } catch (e) {
     next(e);
   }
