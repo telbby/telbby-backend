@@ -54,3 +54,21 @@ export const handleCreateService = async (
     next(e);
   }
 };
+
+export const handleDeleteService = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+): Promise<void> => {
+  try {
+    const { id } = req.params;
+    const uid = getUIDFromToken(getAccessToken(req.headers.authorization));
+
+    const serviceServiceInstance = Container.get(ServiceService);
+    await serviceServiceInstance.deleteService(uid, Number(id));
+
+    res.status(200).json({ result: 'service delete success' });
+  } catch (e) {
+    next(e);
+  }
+};

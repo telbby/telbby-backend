@@ -64,6 +64,20 @@ class ServiceService {
     const { id, createdAt, updatedAt } = service;
     return { id, createdAt, updatedAt };
   }
+
+  async deleteService(uid: string, serviceId: number): Promise<void> {
+    const service = await this.serviceRepository.findByServiceId(serviceId);
+
+    if (!service) {
+      throw new ErrorResponse(commonError.badRequest);
+    }
+
+    if (uid !== service.user.uid) {
+      throw new ErrorResponse(commonError.forbidden);
+    }
+
+    await this.serviceRepository.deleteService(service);
+  }
 }
 
 export default ServiceService;

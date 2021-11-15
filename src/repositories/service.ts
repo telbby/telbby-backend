@@ -43,6 +43,10 @@ class ServiceRepository extends Repository<ServiceEntity> {
 
     return createdService;
   }
+
+  async deleteService(service: ServiceEntity): Promise<void> {
+    await this.remove(service);
+  }
 }
 
 export default ServiceRepository;
