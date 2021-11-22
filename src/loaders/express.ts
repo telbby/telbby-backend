@@ -1,3 +1,5 @@
+import '../config/cloudinary';
+
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import express, { Application } from 'express';
