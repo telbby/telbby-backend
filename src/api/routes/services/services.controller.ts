@@ -82,7 +82,7 @@ export const handleEditService = async (
       image: { ...req.file },
     });
 
-    res.status(200).json({ result: 'service edit success' });
+    res.status(204).end();
   } catch (e) {
     next(e);
   }
