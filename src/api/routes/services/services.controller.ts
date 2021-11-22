@@ -67,6 +67,27 @@ export const handleCreateService = async (
   }
 };
 
+export const handleEditService = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+): Promise<void> => {
+  try {
+    const { id } = req.params;
+    const uid = getUIDFromToken(getAccessToken(req.headers.authorization));
+
+    const serviceServiceInstance = Container.get(ServiceService);
+    await serviceServiceInstance.editService(uid, Number(id), {
+      ...req.body,
+      image: { ...req.file },
+    });
+
+    res.status(200).json({ result: 'service edit success' });
+  } catch (e) {
+    next(e);
+  }
+};
+
 export const handleDeleteService = async (
   req: Request,
   res: Response,

@@ -7,8 +7,9 @@ import ServiceRepository from '../repositories/service';
 import ThemeRepository from '../repositories/theme';
 import UserRepository from '../repositories/user';
 import { UpdateInfo } from '../types';
-import { ServiceBasicInfo } from '../types/service';
+import { EditableServiceInfo, InsertableServiceInfo, ServiceBasicInfo } from '../types/service';
 import ErrorResponse from '../utils/error-response';
+import { uploadFileOnCloudinary } from '../utils/service';
 
 @Service()
 class ServiceService {
@@ -68,6 +69,40 @@ class ServiceService {
 
     const { id, createdAt, updatedAt } = service;
     return { id, createdAt, updatedAt };
+  }
+
+  async editService(
+    uid: string,
+    serviceId: number,
+    serviceInfo: EditableServiceInfo,
+  ): Promise<void> {
+    const service = await this.serviceRepository.findByServiceId(serviceId);
+    const { themeId, image, ...rest } = serviceInfo;
+
+    const updateData: InsertableServiceInfo = rest;
+
+    if (!service) {
+      throw new ErrorResponse(commonError.badRequest);
+    }
+
+    if (uid !== service.user.uid) {
+      throw new ErrorResponse(commonError.forbidden);
+    }
+
+    if (themeId) {
+      const theme = await this.themeRepository.findById(themeId);
+      if (!theme) throw new ErrorResponse(themeError.needDefaultTheme);
+
+      updateData.theme = theme;
+    }
+
+    if (Object.keys(image).length) {
+      const url = await uploadFileOnCloudinary(image);
+
+      updateData.image = url;
+    }
+
+    await this.serviceRepository.editService(service, updateData);
   }
 
   async deleteService(uid: string, serviceId: number): Promise<void> {

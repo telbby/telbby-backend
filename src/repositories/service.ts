@@ -3,7 +3,7 @@ import { EntityRepository, Repository } from 'typeorm';
 import ServiceEntity from '../entity/service';
 import ThemeEntity from '../entity/theme';
 import UserEntity from '../entity/user';
-import { ServiceBasicInfo } from '../types/service';
+import { InsertableServiceInfo, ServiceBasicInfo } from '../types/service';
 import { uuidv4 } from '../utils/service';
 
 @EntityRepository(ServiceEntity)
@@ -44,6 +44,10 @@ class ServiceRepository extends Repository<ServiceEntity> {
     const createdService = await this.save(newService);
 
     return createdService;
+  }
+
+  async editService(service: ServiceEntity, updateData: InsertableServiceInfo): Promise<void> {
+    await this.update({ id: service.id }, updateData);
   }
 
   async deleteService(service: ServiceEntity): Promise<void> {
