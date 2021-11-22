@@ -1,4 +1,8 @@
 /* eslint-disable no-bitwise */
+import cloudinary, { UploadApiErrorResponse } from 'cloudinary';
+
+import { EditableServiceInfo } from '../types/service';
+import ErrorResponse from './error-response';
 
 export const uuidv4 = (): string =>
   'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
@@ -6,3 +10,22 @@ export const uuidv4 = (): string =>
     const v = c === 'x' ? r : (r & 0x3) | 0x8;
     return v.toString(16);
   });
+
+export const uploadFileOnCloudinary = async (
+  file: EditableServiceInfo['image'],
+): Promise<string> => {
+  const { buffer } = file;
+  const bufferString = `data:image/jpeg;base64,${buffer.toString('base64')}`;
+
+  try {
+    const { url } = await cloudinary.v2.uploader //
+      .upload(bufferString, {
+        upload_preset: 'image_upload_preset',
+      });
+
+    return url;
+  } catch (e) {
+    const { message, http_code: statusCode } = e as UploadApiErrorResponse;
+    throw new ErrorResponse({ message, statusCode });
+  }
+};
