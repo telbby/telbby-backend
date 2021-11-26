@@ -1,5 +1,5 @@
 /* eslint-disable no-bitwise */
-import cloudinary, { UploadApiErrorResponse } from 'cloudinary';
+import { UploadApiErrorResponse, v2 } from 'cloudinary';
 
 import { EditableServiceInfo } from '../types/service';
 import ErrorResponse from './error-response';
@@ -18,10 +18,9 @@ export const uploadFileOnCloudinary = async (
   const bufferString = `data:image/jpeg;base64,${buffer.toString('base64')}`;
 
   try {
-    const { url } = await cloudinary.v2.uploader //
-      .upload(bufferString, {
-        upload_preset: 'image_upload_preset',
-      });
+    const { url } = await v2.uploader.upload(bufferString, {
+      upload_preset: 'image_upload_preset',
+    });
 
     return url;
   } catch (e) {
