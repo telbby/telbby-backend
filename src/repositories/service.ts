@@ -4,7 +4,7 @@ import ServiceEntity from '../entity/service';
 import ThemeEntity from '../entity/theme';
 import UserEntity from '../entity/user';
 import { ServiceBasicInfo } from '../types/service';
-import { createClientId } from '../utils/service';
+import { uuidv4 } from '../utils/service';
 
 @EntityRepository(ServiceEntity)
 class ServiceRepository extends Repository<ServiceEntity> {
@@ -32,7 +32,7 @@ class ServiceRepository extends Repository<ServiceEntity> {
     const { name, description, domain } = serviceInfo;
 
     const newService = new ServiceEntity();
-    newService.clientId = createClientId();
+    newService.clientId = uuidv4();
     newService.name = name;
     if (description) newService.description = description;
     if (domain) newService.domain = domain;
