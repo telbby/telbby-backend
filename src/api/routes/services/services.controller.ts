@@ -81,12 +81,12 @@ export const handleEditService = async (
     const accessToken = getAccessToken(req.headers.authorization);
     const { uid } = jwtHelper.decodeAccessToken(accessToken);
 
-    await serviceServiceInstance.editService(uid, Number(id), {
+    const result = await serviceServiceInstance.editService(uid, Number(id), {
       ...req.body,
       image: { ...req.file },
     });
 
-    res.status(204).end();
+    res.json(result);
   } catch (e) {
     next(e);
   }

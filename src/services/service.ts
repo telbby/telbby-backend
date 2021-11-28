@@ -75,7 +75,7 @@ class ServiceService {
     uid: string,
     serviceId: number,
     serviceInfo: EditableServiceInfo,
-  ): Promise<void> {
+  ): Promise<{ id: number } & UpdateInfo> {
     const service = await this.serviceRepository.findByServiceId(serviceId);
     const { themeId, image, ...rest } = serviceInfo;
 
@@ -103,7 +103,10 @@ class ServiceService {
       updateData.image = url;
     }
 
-    await this.serviceRepository.editService(service.id, updateData);
+    const editedService = await this.serviceRepository.editService(service, updateData);
+
+    const { id, createdAt, updatedAt } = editedService;
+    return { id, createdAt, updatedAt };
   }
 
   async deleteService(uid: string, serviceId: number): Promise<void> {

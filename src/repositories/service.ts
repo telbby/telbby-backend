@@ -46,8 +46,19 @@ class ServiceRepository extends Repository<ServiceEntity> {
     return createdService;
   }
 
-  async editService(serviceId: number, updateData: InsertableServiceInfo): Promise<void> {
-    await this.update({ id: serviceId }, updateData);
+  async editService<K extends keyof InsertableServiceInfo>(
+    service: ServiceEntity,
+    updateData: InsertableServiceInfo,
+  ): Promise<ServiceEntity> {
+    const editedServiceEntity = service;
+
+    (Object.entries(updateData) as [K, ServiceEntity[K]][]).forEach(([key, val]) => {
+      editedServiceEntity[key] = val;
+    });
+
+    const editedService = this.save(service);
+
+    return editedService;
   }
 
   async deleteService(service: ServiceEntity): Promise<void> {
