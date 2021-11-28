@@ -1,7 +1,6 @@
 /* eslint-disable no-bitwise */
 import { UploadApiErrorResponse, v2 } from 'cloudinary';
 
-import { EditableServiceInfo } from '../types/service';
 import ErrorResponse from './error-response';
 
 export const uuidv4 = (): string =>
@@ -11,9 +10,7 @@ export const uuidv4 = (): string =>
     return v.toString(16);
   });
 
-export const uploadFileOnCloudinary = async (
-  file: EditableServiceInfo['image'],
-): Promise<string> => {
+export const uploadFileOnCloudinary = async (file: Express.Multer.File): Promise<string> => {
   const { buffer } = file;
   const bufferString = `data:image/jpeg;base64,${buffer.toString('base64')}`;
 
