@@ -31,14 +31,14 @@ class ServiceRepository extends Repository<ServiceEntity> {
   ): Promise<ServiceEntity> {
     const { name, description, domain } = serviceInfo;
 
-    const newService = new ServiceEntity();
-    newService.clientId = uuidv4();
-    newService.name = name;
-    if (description) newService.description = description;
-    if (domain) newService.domain = domain;
-    newService.theme = theme;
-    newService.user = user;
-
+    const newService = this.create({
+      clientId: uuidv4(),
+      name,
+      description,
+      domain,
+      theme,
+      user,
+    });
     const createdService = await this.save(newService);
 
     return createdService;
