@@ -13,8 +13,13 @@ export const handleGetService = async (
   try {
     const { id } = req.params;
 
+    const jwtHelper = Container.get<JwtHelper>('jwtHelper');
     const serviceServiceInstance = Container.get(ServiceService);
-    const service = await serviceServiceInstance.getService(Number(id));
+
+    const accessToken = getAccessToken(req.headers.authorization);
+    const { uid } = jwtHelper.decodeAccessToken(accessToken);
+
+    const service = await serviceServiceInstance.getService(uid, Number(id));
 
     res.json(service);
   } catch (e) {
@@ -34,7 +39,7 @@ export const handleGetUserServices = async (
     const accessToken = getAccessToken(req.headers.authorization);
     const { uid } = jwtHelper.decodeAccessToken(accessToken);
 
-    const result = await serviceServiceInstance.getAllServiceOfUser(uid);
+    const result = await serviceServiceInstance.getAllServiceAndCountOfUser(uid);
 
     res.json(result);
   } catch (e) {

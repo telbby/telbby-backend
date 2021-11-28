@@ -13,7 +13,7 @@ import {
 const router = Router();
 
 router.post('/', validateToken, createServiceValidation, handleCreateService);
-router.get('/id/:id', serviceIdValidation, handleGetService);
+router.get('/id/:id', validateToken, serviceIdValidation, handleGetService);
 router.get('/user', validateToken, handleGetUserServices);
 router.delete('/id/:id', validateToken, serviceIdValidation, handleDeleteService);
 

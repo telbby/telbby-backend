@@ -28,15 +28,23 @@ class ServiceService {
     this.themeRepository = themeRepository;
   }
 
-  async getService(id: number): Promise<ServiceEntity> {
+  async getService(uid: string, id: number): Promise<ServiceEntity> {
     const service = await this.serviceRepository.findByServiceId(id);
+
     if (!service) {
       throw new ErrorResponse(commonError.notFound);
     }
+
+    if (service.user.uid !== uid) {
+      throw new ErrorResponse(commonError.forbidden);
+    }
+
     return service;
   }
 
-  async getAllServiceOfUser(uid: string): Promise<{ serviceList: ServiceEntity[]; count: number }> {
+  async getAllServiceAndCountOfUser(
+    uid: string,
+  ): Promise<{ serviceList: ServiceEntity[]; count: number }> {
     const [serviceList, count] = await this.serviceRepository.findAndCountByUserId(uid);
     return { serviceList, count };
   }
