@@ -1,8 +1,9 @@
 import { NextFunction, Request, Response } from 'express';
 import { Container } from 'typedi';
 
+import JwtHelper from '../../../helpers/jwt';
 import ServiceService from '../../../services/service';
-import { getAccessToken, getUIDFromToken } from '../../../utils/jwt';
+import { getAccessToken } from '../../../utils/jwt';
 
 export const handleGetService = async (
   req: Request,
@@ -27,9 +28,12 @@ export const handleGetUserServices = async (
   next: NextFunction,
 ): Promise<void> => {
   try {
-    const uid = getUIDFromToken(getAccessToken(req.headers.authorization));
-
+    const jwtHelper = Container.get<JwtHelper>('jwtHelper');
     const serviceServiceInstance = Container.get(ServiceService);
+
+    const accessToken = getAccessToken(req.headers.authorization);
+    const { uid } = jwtHelper.decodeAccessToken(accessToken);
+
     const result = await serviceServiceInstance.getAllServiceOfUser(uid);
 
     res.json(result);
@@ -44,9 +48,12 @@ export const handleCreateService = async (
   next: NextFunction,
 ): Promise<void> => {
   try {
-    const uid = getUIDFromToken(getAccessToken(req.headers.authorization));
-
+    const jwtHelper = Container.get<JwtHelper>('jwtHelper');
     const serviceServiceInstance = Container.get(ServiceService);
+
+    const accessToken = getAccessToken(req.headers.authorization);
+    const { uid } = jwtHelper.decodeAccessToken(accessToken);
+
     const result = await serviceServiceInstance.createService(uid, req.body);
 
     res.json(result);
@@ -62,9 +69,13 @@ export const handleDeleteService = async (
 ): Promise<void> => {
   try {
     const { id } = req.params;
-    const uid = getUIDFromToken(getAccessToken(req.headers.authorization));
 
+    const jwtHelper = Container.get<JwtHelper>('jwtHelper');
     const serviceServiceInstance = Container.get(ServiceService);
+
+    const accessToken = getAccessToken(req.headers.authorization);
+    const { uid } = jwtHelper.decodeAccessToken(accessToken);
+
     await serviceServiceInstance.deleteService(uid, Number(id));
 
     res.status(204).end();

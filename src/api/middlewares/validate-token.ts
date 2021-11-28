@@ -1,8 +1,10 @@
 import { NextFunction, Request, Response } from 'express';
+import { Container } from 'typedi';
 
 import { commonError } from '../../constants/error';
+import JwtHelper from '../../helpers/jwt';
 import ErrorResponse from '../../utils/error-response';
-import { checkTokenExpiration, getAccessToken, getRefreshToken } from '../../utils/jwt';
+import { getAccessToken, getRefreshToken } from '../../utils/jwt';
 
 const validateToken = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
@@ -13,7 +15,8 @@ const validateToken = async (req: Request, res: Response, next: NextFunction): P
       throw new ErrorResponse(commonError.unauthorized);
     }
 
-    const isTokenExpired = await checkTokenExpiration(accessToken);
+    const jwtHelper = Container.get<JwtHelper>('jwtHelper');
+    const isTokenExpired = await jwtHelper.checkTokenExpiration(accessToken);
 
     if (isTokenExpired) {
       res.redirect(303, '/api/auth?redirect=true');
