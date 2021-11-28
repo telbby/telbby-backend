@@ -1,6 +1,13 @@
 import { UploadApiErrorResponse, v2 } from 'cloudinary';
 
+import repositoryConfig from '../config';
 import ErrorResponse from './error-response';
+
+v2.config({
+  cloud_name: repositoryConfig.cloudinaryOptions.cloudName,
+  api_key: repositoryConfig.cloudinaryOptions.apiKey,
+  api_secret: repositoryConfig.cloudinaryOptions.apiSecret,
+});
 
 export const uploadFileOnCloudinary = async (file: Express.Multer.File): Promise<string> => {
   const { buffer } = file;
