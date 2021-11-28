@@ -9,17 +9,19 @@ import { uuidv4 } from '../utils/service';
 @EntityRepository(ServiceEntity)
 class ServiceRepository extends Repository<ServiceEntity> {
   async findByServiceId(id: number): Promise<ServiceEntity | undefined> {
-    const service = await this.findOne({
-      where: { id },
-      relations: ['theme', 'user'],
-    });
+    const service = await this.createQueryBuilder('service')
+      .where('service.id = :id', { id })
+      .leftJoinAndSelect('service.theme', 'theme')
+      .leftJoin('service.user', 'user')
+      .addSelect(['user.uid'])
+      .getOne();
     return service;
   }
 
   async findAndCountByUserId(userId: string): Promise<[ServiceEntity[], number]> {
     const serviceListAndCount = await this.findAndCount({
+      select: ['id', 'name', 'domain', 'clientId'],
       where: { user: userId },
-      relations: ['theme'],
     });
     return serviceListAndCount;
   }
