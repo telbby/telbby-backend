@@ -8,8 +8,8 @@ import ThemeRepository from '../repositories/theme';
 import UserRepository from '../repositories/user';
 import { UpdateInfo } from '../types';
 import { EditableServiceInfo, InsertableServiceInfo, ServiceBasicInfo } from '../types/service';
+import { uploadFileOnCloudinary } from '../utils/cloudinary';
 import ErrorResponse from '../utils/error-response';
-import { uploadFileOnCloudinary } from '../utils/service';
 
 @Service()
 class ServiceService {
