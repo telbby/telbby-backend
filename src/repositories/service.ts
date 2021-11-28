@@ -46,8 +46,8 @@ class ServiceRepository extends Repository<ServiceEntity> {
     return createdService;
   }
 
-  async editService(service: ServiceEntity, updateData: InsertableServiceInfo): Promise<void> {
-    await this.update({ id: service.id }, updateData);
+  async editService(serviceId: number, updateData: InsertableServiceInfo): Promise<void> {
+    await this.update({ id: serviceId }, updateData);
   }
 
   async deleteService(service: ServiceEntity): Promise<void> {

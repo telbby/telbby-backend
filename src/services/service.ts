@@ -102,7 +102,7 @@ class ServiceService {
       updateData.image = url;
     }
 
-    await this.serviceRepository.editService(service, updateData);
+    await this.serviceRepository.editService(service.id, updateData);
   }
 
   async deleteService(uid: string, serviceId: number): Promise<void> {
