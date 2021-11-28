@@ -74,9 +74,13 @@ export const handleEditService = async (
 ): Promise<void> => {
   try {
     const { id } = req.params;
-    const uid = getUIDFromToken(getAccessToken(req.headers.authorization));
 
+    const jwtHelper = Container.get<JwtHelper>('jwtHelper');
     const serviceServiceInstance = Container.get(ServiceService);
+
+    const accessToken = getAccessToken(req.headers.authorization);
+    const { uid } = jwtHelper.decodeAccessToken(accessToken);
+
     await serviceServiceInstance.editService(uid, Number(id), {
       ...req.body,
       image: { ...req.file },
