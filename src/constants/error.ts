@@ -44,3 +44,10 @@ export const commonError = {
     message: 'Invalid state',
   },
 };
+
+export const themeError = {
+  needDefaultTheme: {
+    statusCode: 500,
+    message: 'Should create default theme',
+  },
+};
