@@ -15,7 +15,7 @@ export interface ServiceInfo extends ServiceBasicInfo {
 }
 
 export interface EditableServiceInfo
-  extends Omit<Partial<ServiceInfo>, 'clientId' | 'image' | 'userUid'> {
+  extends Omit<Partial<ServiceInfo>, 'clientId' | 'image' | 'userId'> {
   image: Express.Multer.File;
 }
 
