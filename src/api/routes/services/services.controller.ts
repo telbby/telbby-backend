@@ -15,7 +15,7 @@ export const handleGetService = async (
     const serviceServiceInstance = Container.get(ServiceService);
     const service = await serviceServiceInstance.getService(Number(id));
 
-    res.status(200).json(service);
+    res.json(service);
   } catch (e) {
     next(e);
   }
@@ -32,7 +32,7 @@ export const handleGetUserServices = async (
     const serviceServiceInstance = Container.get(ServiceService);
     const result = await serviceServiceInstance.getAllServiceOfUser(uid);
 
-    res.status(200).json(result);
+    res.json(result);
   } catch (e) {
     next(e);
   }
@@ -49,7 +49,7 @@ export const handleCreateService = async (
     const serviceServiceInstance = Container.get(ServiceService);
     const result = await serviceServiceInstance.createService(uid, req.body);
 
-    res.status(200).json(result);
+    res.json(result);
   } catch (e) {
     next(e);
   }
@@ -67,7 +67,7 @@ export const handleDeleteService = async (
     const serviceServiceInstance = Container.get(ServiceService);
     await serviceServiceInstance.deleteService(uid, Number(id));
 
-    res.status(200).json({ result: 'service delete success' });
+    res.status(204).end();
   } catch (e) {
     next(e);
   }

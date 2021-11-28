@@ -31,7 +31,7 @@ class ServiceService {
   async getService(id: number): Promise<ServiceEntity> {
     const service = await this.serviceRepository.findByServiceId(id);
     if (!service) {
-      throw new ErrorResponse(commonError.badRequest);
+      throw new ErrorResponse(commonError.notFound);
     }
     return service;
   }
@@ -66,7 +66,7 @@ class ServiceService {
     const service = await this.serviceRepository.findByServiceId(serviceId);
 
     if (!service) {
-      throw new ErrorResponse(commonError.badRequest);
+      throw new ErrorResponse(commonError.notFound);
     }
 
     if (uid !== service.user.uid) {

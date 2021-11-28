@@ -2,7 +2,7 @@ import jwt, { Algorithm, VerifyErrors } from 'jsonwebtoken';
 
 import config from '../config';
 import { REFRESH_TOKEN_COOKIE_KEY } from '../constants/auth';
-import { authError } from '../constants/error';
+import { commonError } from '../constants/error';
 import { RefreshCookie } from '../types';
 import ErrorResponse from './error-response';
 
@@ -42,7 +42,7 @@ export const getUIDFromToken = (token: string): string => {
   const decoded = jwt.decode(token);
 
   if (!decoded || typeof decoded === 'string') {
-    throw new ErrorResponse(authError.invalidToken);
+    throw new ErrorResponse(commonError.unauthorized);
   }
 
   const { uid } = decoded as { uid: string };

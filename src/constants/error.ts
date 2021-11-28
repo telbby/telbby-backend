@@ -45,13 +45,6 @@ export const commonError = {
   },
 };
 
-export const authError = {
-  invalidToken: {
-    statusCode: 500,
-    message: 'Invalid token',
-  },
-};
-
 export const themeError = {
   needDefaultTheme: {
     statusCode: 500,
