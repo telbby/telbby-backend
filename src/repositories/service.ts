@@ -16,7 +16,7 @@ class ServiceRepository extends Repository<ServiceEntity> {
     return service;
   }
 
-  async findByUserId(userId: string): Promise<[ServiceEntity[], number]> {
+  async findAndCountByUserId(userId: string): Promise<[ServiceEntity[], number]> {
     const serviceListAndCount = await this.findAndCount({
       where: { user: userId },
       relations: ['theme'],

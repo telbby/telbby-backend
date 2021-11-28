@@ -37,11 +37,8 @@ class ServiceService {
   }
 
   async getAllServiceOfUser(uid: string): Promise<{ serviceList: ServiceEntity[]; count: number }> {
-    const result = await this.serviceRepository.findByUserId(uid);
-    return {
-      serviceList: result[0],
-      count: result[1],
-    };
+    const [serviceList, count] = await this.serviceRepository.findAndCountByUserId(uid);
+    return { serviceList, count };
   }
 
   async createService(
