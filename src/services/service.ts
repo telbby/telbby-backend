@@ -82,7 +82,7 @@ class ServiceService {
     const updateData: InsertableServiceInfo = rest;
 
     if (!service) {
-      throw new ErrorResponse(commonError.badRequest);
+      throw new ErrorResponse(commonError.notFound);
     }
 
     if (uid !== service.user.uid) {
