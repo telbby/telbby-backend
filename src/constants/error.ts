@@ -51,3 +51,10 @@ export const themeError = {
     message: 'Should create default theme',
   },
 };
+
+export const cloudinaryError = {
+  wrong: {
+    statusCode: 500,
+    message: 'Upload fail due to cloudinary internal problem.',
+  },
+};

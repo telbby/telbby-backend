@@ -1,6 +1,6 @@
 import { Service } from 'typedi';
 import { InjectRepository } from 'typeorm-typedi-extensions';
-import { commonError, themeError } from '../constants/error';
+import { cloudinaryError, commonError, themeError } from '../constants/error';
 import ServiceEntity from '../entity/service';
 
 import ServiceRepository from '../repositories/service';
@@ -8,7 +8,7 @@ import ThemeRepository from '../repositories/theme';
 import UserRepository from '../repositories/user';
 import { UpdateInfo } from '../types';
 import { EditableServiceInfo, InsertableServiceInfo, ServiceBasicInfo } from '../types/service';
-import { uploadFileOnCloudinary } from '../utils/cloudinary';
+import { uploadBufferOnCloudinary } from '../utils/cloudinary';
 import ErrorResponse from '../utils/error-response';
 
 @Service()
@@ -97,7 +97,8 @@ class ServiceService {
     }
 
     if (Object.keys(image).length) {
-      const url = await uploadFileOnCloudinary(image);
+      const url = await uploadBufferOnCloudinary(image.buffer);
+      if (!url) throw new ErrorResponse(cloudinaryError.wrong);
 
       updateData.image = url;
     }

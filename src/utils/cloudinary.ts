@@ -1,7 +1,6 @@
-import { UploadApiErrorResponse, v2 } from 'cloudinary';
+import { UploadApiOptions, v2 } from 'cloudinary';
 
 import repositoryConfig from '../config';
-import ErrorResponse from './error-response';
 
 v2.config({
   cloud_name: repositoryConfig.cloudinaryOptions.cloudName,
@@ -9,18 +8,14 @@ v2.config({
   api_secret: repositoryConfig.cloudinaryOptions.apiSecret,
 });
 
-export const uploadFileOnCloudinary = async (file: Express.Multer.File): Promise<string> => {
-  const { buffer } = file;
+export const uploadBufferOnCloudinary = async (
+  buffer: Buffer,
+  options: UploadApiOptions = {
+    upload_preset: 'image_upload_preset',
+  },
+): Promise<string> => {
   const bufferString = `data:image/jpeg;base64,${buffer.toString('base64')}`;
 
-  try {
-    const { url } = await v2.uploader.upload(bufferString, {
-      upload_preset: 'image_upload_preset',
-    });
-
-    return url;
-  } catch (e) {
-    const { message, http_code: statusCode } = e as UploadApiErrorResponse;
-    throw new ErrorResponse({ message, statusCode });
-  }
+  const { url } = await v2.uploader.upload(bufferString, options);
+  return url;
 };
