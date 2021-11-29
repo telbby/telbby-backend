@@ -96,7 +96,7 @@ class ServiceService {
       updateData.theme = theme;
     }
 
-    if (Object.keys(image).length) {
+    if ('buffer' in image) {
       const url = await uploadBufferOnCloudinary(image.buffer);
       if (!url) throw new ErrorResponse(cloudinaryError.wrong);
 
