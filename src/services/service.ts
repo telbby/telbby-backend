@@ -97,10 +97,11 @@ class ServiceService {
     }
 
     if ('buffer' in image) {
-      const url = await uploadBufferOnCloudinary(image.buffer);
-      if (!url) throw new ErrorResponse(cloudinaryError.wrong);
-
-      updateData.image = url;
+      try {
+        updateData.image = await uploadBufferOnCloudinary(image.buffer);
+      } catch {
+        throw new ErrorResponse(cloudinaryError.wrong);
+      }
     }
 
     const editedService = await this.serviceRepository.updateService(service, updateData);
