@@ -1,11 +1,11 @@
 import { UploadApiOptions, v2 } from 'cloudinary';
 
-import repositoryConfig from '../config';
+import config from '../config';
 
 v2.config({
-  cloud_name: repositoryConfig.cloudinaryOptions.cloudName,
-  api_key: repositoryConfig.cloudinaryOptions.apiKey,
-  api_secret: repositoryConfig.cloudinaryOptions.apiSecret,
+  cloud_name: config.cloudinaryOptions.cloudName,
+  api_key: config.cloudinaryOptions.apiKey,
+  api_secret: config.cloudinaryOptions.apiSecret,
 });
 
 export const uploadBufferOnCloudinary = async (
