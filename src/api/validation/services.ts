@@ -44,7 +44,7 @@ export const createServiceValidation = (req: Request, _res: Response, next: Next
   next();
 };
 
-export const editServiceValidation = (req: Request, _res: Response, next: NextFunction): void => {
+export const updateServiceValidation = (req: Request, _res: Response, next: NextFunction): void => {
   const schema = Joi.object({
     name: Joi.string(),
     description: Joi.string(),

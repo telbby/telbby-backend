@@ -46,7 +46,7 @@ class ServiceRepository extends Repository<ServiceEntity> {
     return createdService;
   }
 
-  async editService<K extends keyof InsertableServiceInfo>(
+  async updateService<K extends keyof InsertableServiceInfo>(
     service: ServiceEntity,
     updateData: InsertableServiceInfo,
   ): Promise<ServiceEntity> {

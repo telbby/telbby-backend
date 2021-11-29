@@ -71,7 +71,7 @@ class ServiceService {
     return { id, createdAt, updatedAt };
   }
 
-  async editService(
+  async updateService(
     uid: string,
     serviceId: number,
     serviceInfo: EditableServiceInfo,
@@ -103,7 +103,7 @@ class ServiceService {
       updateData.image = url;
     }
 
-    const editedService = await this.serviceRepository.editService(service, updateData);
+    const editedService = await this.serviceRepository.updateService(service, updateData);
 
     const { id, createdAt, updatedAt } = editedService;
     return { id, createdAt, updatedAt };

@@ -67,7 +67,7 @@ export const handleCreateService = async (
   }
 };
 
-export const handleEditService = async (
+export const handleUpdateService = async (
   req: Request,
   res: Response,
   next: NextFunction,
@@ -81,7 +81,7 @@ export const handleEditService = async (
     const accessToken = getAccessToken(req.headers.authorization);
     const { uid } = jwtHelper.decodeAccessToken(accessToken);
 
-    const result = await serviceServiceInstance.editService(uid, Number(id), {
+    const result = await serviceServiceInstance.updateService(uid, Number(id), {
       ...req.body,
       image: { ...req.file },
     });

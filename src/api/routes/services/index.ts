@@ -5,15 +5,15 @@ import multer from 'multer';
 import validateToken from '../../middlewares/validate-token';
 import {
   createServiceValidation,
-  editServiceValidation,
   serviceIdValidation,
+  updateServiceValidation,
 } from '../../validation/services';
 import {
   handleCreateService,
   handleDeleteService,
-  handleEditService,
   handleGetService,
   handleGetUserServices,
+  handleUpdateService,
 } from './services.controller';
 
 const router = Router();
@@ -25,8 +25,8 @@ router.patch(
   '/id/:id',
   validateToken,
   multer().single('image'),
-  editServiceValidation,
-  handleEditService,
+  updateServiceValidation,
+  handleUpdateService,
 );
 router.delete('/id/:id', validateToken, serviceIdValidation, handleDeleteService);
 
