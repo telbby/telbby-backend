@@ -1,4 +1,4 @@
-import jwt, { Algorithm, JwtPayload, SignOptions } from 'jsonwebtoken';
+import jwt, { Algorithm, JwtPayload, SignOptions, VerifyErrors } from 'jsonwebtoken';
 
 import { ACCESS_TOKEN_SUBJECT, REFRESH_TOKEN_SUBJECT } from '../constants/auth';
 
@@ -84,6 +84,18 @@ class JwtHelper {
   getRefreshExpiresInMs(): number {
     const expireMs = 1000 * this.refreshExpiresInSeconds;
     return expireMs;
+  }
+
+  checkTokenExpiration(token: string): Promise<boolean> {
+    return new Promise((resolve, reject) => {
+      jwt.verify(token, this.secret, (err: VerifyErrors | null) => {
+        if (err) {
+          if (err.name === 'TokenExpiredError') resolve(true);
+          else reject(err);
+        }
+        resolve(false);
+      });
+    });
   }
 }
 

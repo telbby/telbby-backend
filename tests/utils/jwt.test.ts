@@ -1,6 +1,7 @@
 import { Algorithm } from 'jsonwebtoken';
 
-import { getJwtAlgorithm } from '../../src/utils/jwt';
+import { REFRESH_TOKEN_COOKIE_KEY } from '../../src/constants/auth';
+import { getAccessToken, getJwtAlgorithm, getRefreshToken } from '../../src/utils/jwt';
 
 describe('jwt utils 테스트', () => {
   describe('getJwtAlgorithm() 함수 테스트', () => {
@@ -29,6 +30,31 @@ describe('jwt utils 테스트', () => {
       expect(getJwtAlgorithm('UnallowedAlgorithm')).toBe('none');
       expect(getJwtAlgorithm('HAHAHAHA')).toBe('none');
       expect(getJwtAlgorithm('Happy')).toBe('none');
+    });
+  });
+
+  describe('getAccessToken() 함수 테스트', () => {
+    it('올바르게 주어진 문자열에 대하여 access token을 반환해야 합니다.', () => {
+      expect(getAccessToken('Bearer access-token')).toBe('access-token');
+    });
+
+    it('잘못 주어진 문자열에 대하여 빈 문자열을 반환해야 합니다.', () => {
+      expect(getAccessToken('access-token')).toBe('');
+      expect(getAccessToken('')).toBe('');
+      expect(getAccessToken('Beareraccess-token')).toBe('');
+      expect(getAccessToken('Bear access-token')).toBe('');
+    });
+  });
+
+  describe('getRefreshToken() 함수 테스트', () => {
+    it('올바르게 주어진 문자열에 대하여 refresh token을 반환해야 합니다.', () => {
+      expect(getRefreshToken({ [REFRESH_TOKEN_COOKIE_KEY]: 'refresh-token' })).toBe(
+        'refresh-token',
+      );
+    });
+
+    it('잘못 주어진 문자열에 대하여 빈 문자열을 반환해야 합니다.', () => {
+      expect(getRefreshToken({ [REFRESH_TOKEN_COOKIE_KEY]: '' })).toBe('');
     });
   });
 });

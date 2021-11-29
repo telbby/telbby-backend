@@ -210,4 +210,31 @@ describe('jwtHelper 모듈 테스트', () => {
       expect(jwtHelper.getRefreshExpiresInMs()).toBe(refreshExpiresinMs);
     });
   });
+
+  describe('jwtHelper.checkTokenExpiration() 함수 테스트', () => {
+    const mockedAccessTokenPayload: OwnAccessJwtPayload = { uid: 'uuid', userId: 'testID' };
+
+    it('만료된 토큰에 대해서는 true를 반환해야 합니다.', async () => {
+      const jwtHelper = new JwtHelper({
+        algorithm: 'HS256',
+        secret: 'jwt-secret',
+        accessExpiresInHour: 0,
+        refreshExpiresInHour: 0,
+      });
+
+      const accessToken = jwtHelper.generateAccessToken(mockedAccessTokenPayload);
+      const isTokenExpired = await jwtHelper.checkTokenExpiration(accessToken);
+
+      expect(isTokenExpired).toBe(true);
+    });
+
+    it('만료되지 않은 토큰에 대해서는 false를 반환해야 합니다.', async () => {
+      const jwtHelper = new JwtHelper(mockJwtOptions);
+
+      const accessToken = jwtHelper.generateAccessToken(mockedAccessTokenPayload);
+      const isTokenExpired = await jwtHelper.checkTokenExpiration(accessToken);
+
+      expect(isTokenExpired).toBe(false);
+    });
+  });
 });

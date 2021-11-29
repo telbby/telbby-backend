@@ -4,7 +4,8 @@ import Container from 'typedi';
 import { REFRESH_TOKEN_COOKIE_KEY } from '../../../constants/auth';
 import JwtHelper from '../../../helpers/jwt';
 import AuthService from '../../../services/auth';
-import { LoginRequestBody, RefreshRequestCookiesType } from '../../../types';
+import { LoginRequestBody } from '../../../types';
+import { getRefreshToken } from '../../../utils/jwt';
 
 export const handleLogin = async (
   req: Request,
@@ -27,7 +28,7 @@ export const handleLogin = async (
     };
     res.cookie(REFRESH_TOKEN_COOKIE_KEY, refresh, refreshTokenCookieOptions);
 
-    res.json({ access });
+    res.status(200).json({ access });
   } catch (e) {
     next(e);
   }
@@ -48,15 +49,20 @@ export const handleRefresh = async (
   next: NextFunction,
 ): Promise<void> => {
   try {
+    const { redirect } = req.query;
+
     const authServiceInstance = Container.get(AuthService);
 
-    const refreshRequestCookies = req.cookies as RefreshRequestCookiesType;
-    const refreshToken = refreshRequestCookies[REFRESH_TOKEN_COOKIE_KEY];
-
+    const refreshToken = getRefreshToken(req.cookies);
     const { access } = await authServiceInstance.refreshAccessToken(refreshToken);
 
-    res.json({ access });
+    if (redirect) {
+      res.status(200).json({ requestAgain: true, access });
+    } else {
+      res.status(200).json({ access });
+    }
   } catch (e) {
+    res.clearCookie(REFRESH_TOKEN_COOKIE_KEY);
     next(e);
   }
 };
