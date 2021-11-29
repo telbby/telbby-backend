@@ -1,3 +1,5 @@
+import ThemeEntity from '../entity/theme';
+
 export interface ServiceBasicInfo {
   name: string;
   description?: string;
@@ -10,4 +12,14 @@ export interface ServiceInfo extends ServiceBasicInfo {
   question: string;
   themeId: number;
   userId: string;
+}
+
+export interface EditableServiceInfo
+  extends Omit<Partial<ServiceInfo>, 'clientId' | 'image' | 'userId'> {
+  image: Express.Multer.File;
+}
+
+export interface InsertableServiceInfo extends Omit<EditableServiceInfo, 'themeId' | 'image'> {
+  theme?: ThemeEntity;
+  image?: string;
 }

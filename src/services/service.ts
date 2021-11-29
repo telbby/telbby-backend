@@ -1,13 +1,14 @@
 import { Service } from 'typedi';
 import { InjectRepository } from 'typeorm-typedi-extensions';
-import { commonError, themeError } from '../constants/error';
+import { cloudinaryError, commonError, themeError } from '../constants/error';
 import ServiceEntity from '../entity/service';
 
 import ServiceRepository from '../repositories/service';
 import ThemeRepository from '../repositories/theme';
 import UserRepository from '../repositories/user';
 import { UpdateInfo } from '../types';
-import { ServiceBasicInfo } from '../types/service';
+import { EditableServiceInfo, InsertableServiceInfo, ServiceBasicInfo } from '../types/service';
+import { uploadBufferOnCloudinary } from '../utils/cloudinary';
 import ErrorResponse from '../utils/error-response';
 
 @Service()
@@ -67,6 +68,45 @@ class ServiceService {
     const service = await this.serviceRepository.createService(serviceInfo, theme, user);
 
     const { id, createdAt, updatedAt } = service;
+    return { id, createdAt, updatedAt };
+  }
+
+  async updateService(
+    uid: string,
+    serviceId: number,
+    serviceInfo: EditableServiceInfo,
+  ): Promise<{ id: number } & UpdateInfo> {
+    const service = await this.serviceRepository.findByServiceId(serviceId);
+    const { themeId, image, ...rest } = serviceInfo;
+
+    const updateData: InsertableServiceInfo = rest;
+
+    if (!service) {
+      throw new ErrorResponse(commonError.notFound);
+    }
+
+    if (uid !== service.user.uid) {
+      throw new ErrorResponse(commonError.forbidden);
+    }
+
+    if (themeId) {
+      const theme = await this.themeRepository.findById(themeId);
+      if (!theme) throw new ErrorResponse(themeError.needDefaultTheme);
+
+      updateData.theme = theme;
+    }
+
+    if ('buffer' in image) {
+      try {
+        updateData.image = await uploadBufferOnCloudinary(image.buffer);
+      } catch {
+        throw new ErrorResponse(cloudinaryError.wrong);
+      }
+    }
+
+    const editedService = await this.serviceRepository.updateService(service, updateData);
+
+    const { id, createdAt, updatedAt } = editedService;
     return { id, createdAt, updatedAt };
   }
 

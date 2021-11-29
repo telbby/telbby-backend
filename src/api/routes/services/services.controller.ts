@@ -67,6 +67,31 @@ export const handleCreateService = async (
   }
 };
 
+export const handleUpdateService = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+): Promise<void> => {
+  try {
+    const { id } = req.params;
+
+    const jwtHelper = Container.get<JwtHelper>('jwtHelper');
+    const serviceServiceInstance = Container.get(ServiceService);
+
+    const accessToken = getAccessToken(req.headers.authorization);
+    const { uid } = jwtHelper.decodeAccessToken(accessToken);
+
+    const result = await serviceServiceInstance.updateService(uid, Number(id), {
+      ...req.body,
+      image: { ...req.file },
+    });
+
+    res.json(result);
+  } catch (e) {
+    next(e);
+  }
+};
+
 export const handleDeleteService = async (
   req: Request,
   res: Response,

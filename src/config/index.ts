@@ -18,4 +18,9 @@ export default {
       refresh: parseFloat(process.env.JWT_EXPIRE_REFRESH || '0'),
     },
   },
+  cloudinaryOptions: {
+    cloudName: process.env.CLOUDINARY_CLOUD_NAME,
+    apiKey: process.env.CLOUDINARY_API_KEY,
+    apiSecret: process.env.CLOUDINARY_API_SECRET,
+  },
 };
