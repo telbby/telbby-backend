@@ -9,7 +9,7 @@ This is **BackEnd Repository** of **Telbby**, a service that can be introduced i
 
 > [Go to FrontEnd Repository](https://github.com/telbby/telbby-frontend)
 
-## Technology
+## Tech Stack
 
 - TypeScript
 - Node.js
@@ -47,7 +47,7 @@ tests
 
 ### Prerequisites
 
-- Intstall [Node.js](https://nodejs.org/).
+- Install [Node.js](https://nodejs.org/).
 - Refer to the `.mock.env` file and create the `.env` file in the root directory. 
 
 ### Run
