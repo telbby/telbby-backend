@@ -1,0 +1,11 @@
+addReviewers: true
+
+addAssignees: author
+
+reviewers:
+  - hseoy
+  - Seogeurim
+  - jonghopark95
+  - jiyong1
+
+numberOfReviewers: 0
