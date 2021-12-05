@@ -2,10 +2,10 @@ import { NextFunction, Request, Response } from 'express';
 import { Container } from 'typedi';
 
 import JwtHelper from '../../../helpers/jwt';
-import ServiceService from '../../../services/service';
+import ProjectService from '../../../services/project';
 import { getAccessToken } from '../../../utils/jwt';
 
-export const handleGetService = async (
+export const handleGetProject = async (
   req: Request,
   res: Response,
   next: NextFunction,
@@ -14,32 +14,32 @@ export const handleGetService = async (
     const { id } = req.params;
 
     const jwtHelper = Container.get<JwtHelper>('jwtHelper');
-    const serviceServiceInstance = Container.get(ServiceService);
+    const projectServiceInstance = Container.get(ProjectService);
 
     const accessToken = getAccessToken(req.headers.authorization);
     const { uid } = jwtHelper.decodeAccessToken(accessToken);
 
-    const service = await serviceServiceInstance.getService(uid, Number(id));
+    const project = await projectServiceInstance.getProject(uid, Number(id));
 
-    res.json(service);
+    res.json(project);
   } catch (e) {
     next(e);
   }
 };
 
-export const handleGetUserServices = async (
+export const handleGetUserProjects = async (
   req: Request,
   res: Response,
   next: NextFunction,
 ): Promise<void> => {
   try {
     const jwtHelper = Container.get<JwtHelper>('jwtHelper');
-    const serviceServiceInstance = Container.get(ServiceService);
+    const projectServiceInstance = Container.get(ProjectService);
 
     const accessToken = getAccessToken(req.headers.authorization);
     const { uid } = jwtHelper.decodeAccessToken(accessToken);
 
-    const result = await serviceServiceInstance.getAllServiceAndCountOfUser(uid);
+    const result = await projectServiceInstance.getAllProjectAndCountOfUser(uid);
 
     res.json(result);
   } catch (e) {
@@ -47,19 +47,19 @@ export const handleGetUserServices = async (
   }
 };
 
-export const handleCreateService = async (
+export const handleCreateProject = async (
   req: Request,
   res: Response,
   next: NextFunction,
 ): Promise<void> => {
   try {
     const jwtHelper = Container.get<JwtHelper>('jwtHelper');
-    const serviceServiceInstance = Container.get(ServiceService);
+    const projectServiceInstance = Container.get(ProjectService);
 
     const accessToken = getAccessToken(req.headers.authorization);
     const { uid } = jwtHelper.decodeAccessToken(accessToken);
 
-    const result = await serviceServiceInstance.createService(uid, req.body);
+    const result = await projectServiceInstance.createProject(uid, req.body);
 
     res.json(result);
   } catch (e) {
@@ -67,7 +67,7 @@ export const handleCreateService = async (
   }
 };
 
-export const handleUpdateService = async (
+export const handleUpdateProject = async (
   req: Request,
   res: Response,
   next: NextFunction,
@@ -76,12 +76,12 @@ export const handleUpdateService = async (
     const { id } = req.params;
 
     const jwtHelper = Container.get<JwtHelper>('jwtHelper');
-    const serviceServiceInstance = Container.get(ServiceService);
+    const projectServiceInstance = Container.get(ProjectService);
 
     const accessToken = getAccessToken(req.headers.authorization);
     const { uid } = jwtHelper.decodeAccessToken(accessToken);
 
-    const result = await serviceServiceInstance.updateService(uid, Number(id), {
+    const result = await projectServiceInstance.updateProject(uid, Number(id), {
       ...req.body,
       image: { ...req.file },
     });
@@ -92,7 +92,7 @@ export const handleUpdateService = async (
   }
 };
 
-export const handleDeleteService = async (
+export const handleDeleteProject = async (
   req: Request,
   res: Response,
   next: NextFunction,
@@ -101,12 +101,12 @@ export const handleDeleteService = async (
     const { id } = req.params;
 
     const jwtHelper = Container.get<JwtHelper>('jwtHelper');
-    const serviceServiceInstance = Container.get(ServiceService);
+    const projectServiceInstance = Container.get(ProjectService);
 
     const accessToken = getAccessToken(req.headers.authorization);
     const { uid } = jwtHelper.decodeAccessToken(accessToken);
 
-    await serviceServiceInstance.deleteService(uid, Number(id));
+    await projectServiceInstance.deleteProject(uid, Number(id));
 
     res.status(204).end();
   } catch (e) {

@@ -7,7 +7,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
-import ServiceEntity from './service';
+import ProjectEntity from './project';
 import UserEntity from './user';
 
 @Entity({ name: 'review' })
@@ -27,8 +27,8 @@ class ReviewEntity {
   @UpdateDateColumn({ type: 'timestamp' })
   updatedAt: Date;
 
-  @ManyToOne(() => ServiceEntity, service => service.id, { nullable: false })
-  service: ServiceEntity;
+  @ManyToOne(() => ProjectEntity, project => project.id, { nullable: false })
+  project: ProjectEntity;
 
   @ManyToOne(() => UserEntity, user => user.uid, { nullable: false })
   reviewer: UserEntity;
