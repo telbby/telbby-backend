@@ -10,8 +10,8 @@ import {
 import ThemeEntity from './theme';
 import UserEntity from './user';
 
-@Entity({ name: 'service' })
-class ServiceEntity {
+@Entity({ name: 'project' })
+class ProjectEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -46,4 +46,4 @@ class ServiceEntity {
   user: UserEntity;
 }
 
-export default ServiceEntity;
+export default ProjectEntity;
