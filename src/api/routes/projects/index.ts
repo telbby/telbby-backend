@@ -19,15 +19,16 @@ import {
 const router = Router();
 
 router.post('/', validateToken, createProjectValidation, handleCreateProject);
-router.get('/id/:id', validateToken, projectIdValidation, handleGetProject);
-router.get('/user', validateToken, handleGetUserProjects);
+router.get('/', validateToken, handleGetUserProjects);
+
+router.get('/:id', validateToken, projectIdValidation, handleGetProject);
 router.patch(
-  '/id/:id',
+  '/:id',
   validateToken,
   multer().single('image'),
   updateProjectValidation,
   handleUpdateProject,
 );
-router.delete('/id/:id', validateToken, projectIdValidation, handleDeleteProject);
+router.delete('/:id', validateToken, projectIdValidation, handleDeleteProject);
 
 export default router;
