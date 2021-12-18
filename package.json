@@ -20,6 +20,7 @@
     "test:coverage": "jest --coverage"
   },
   "dependencies": {
+    "@telbby/validation": "^1.1.4",
     "bcrypt": "^5.0.1",
     "cloudinary": "^1.27.1",
     "cookie-parser": "^1.4.5",
