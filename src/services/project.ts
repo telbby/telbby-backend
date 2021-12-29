@@ -1,58 +1,58 @@
 import { Service } from 'typedi';
 import { InjectRepository } from 'typeorm-typedi-extensions';
 import { cloudinaryError, commonError, themeError } from '../constants/error';
-import ServiceEntity from '../entity/service';
+import ProjectEntity from '../entity/project';
 
-import ServiceRepository from '../repositories/service';
+import ProjectRepository from '../repositories/project';
 import ThemeRepository from '../repositories/theme';
 import UserRepository from '../repositories/user';
 import { UpdateInfo } from '../types';
-import { EditableServiceInfo, InsertableServiceInfo, ServiceBasicInfo } from '../types/service';
+import { EditableProjectInfo, InsertableProjectInfo, ProjectBasicInfo } from '../types/project';
 import { uploadBufferOnCloudinary } from '../utils/cloudinary';
 import ErrorResponse from '../utils/error-response';
 
 @Service()
-class ServiceService {
-  private serviceRepository: ServiceRepository;
+class ProjectService {
+  private projectRepository: ProjectRepository;
 
   private userRepository: UserRepository;
 
   private themeRepository: ThemeRepository;
 
   constructor(
-    @InjectRepository(ServiceRepository) serviceRepository: ServiceRepository,
+    @InjectRepository(ProjectRepository) projectRepository: ProjectRepository,
     @InjectRepository(UserRepository) userRepository: UserRepository,
     @InjectRepository(ThemeRepository) themeRepository: ThemeRepository,
   ) {
-    this.serviceRepository = serviceRepository;
+    this.projectRepository = projectRepository;
     this.userRepository = userRepository;
     this.themeRepository = themeRepository;
   }
 
-  async getService(uid: string, id: number): Promise<ServiceEntity> {
-    const service = await this.serviceRepository.findByServiceId(id);
+  async getProject(uid: string, id: number): Promise<ProjectEntity> {
+    const project = await this.projectRepository.findByProjectId(id);
 
-    if (!service) {
+    if (!project) {
       throw new ErrorResponse(commonError.notFound);
     }
 
-    if (service.user.uid !== uid) {
+    if (project.user.uid !== uid) {
       throw new ErrorResponse(commonError.forbidden);
     }
 
-    return service;
+    return project;
   }
 
-  async getAllServiceAndCountOfUser(
+  async getAllProjectAndCountOfUser(
     uid: string,
-  ): Promise<{ serviceList: ServiceEntity[]; count: number }> {
-    const [serviceList, count] = await this.serviceRepository.findAndCountByUserId(uid);
-    return { serviceList, count };
+  ): Promise<{ projectList: ProjectEntity[]; count: number }> {
+    const [projectList, count] = await this.projectRepository.findAndCountByUserId(uid);
+    return { projectList, count };
   }
 
-  async createService(
+  async createProject(
     uid: string,
-    serviceInfo: ServiceBasicInfo,
+    projectInfo: ProjectBasicInfo,
   ): Promise<{ id: number } & UpdateInfo> {
     const theme = await this.themeRepository.findById(1);
     const user = await this.userRepository.findByUid(uid);
@@ -65,27 +65,27 @@ class ServiceService {
       throw new ErrorResponse(commonError.unauthorized);
     }
 
-    const service = await this.serviceRepository.createService(serviceInfo, theme, user);
+    const project = await this.projectRepository.createProject(projectInfo, theme, user);
 
-    const { id, createdAt, updatedAt } = service;
+    const { id, createdAt, updatedAt } = project;
     return { id, createdAt, updatedAt };
   }
 
-  async updateService(
+  async updateProject(
     uid: string,
-    serviceId: number,
-    serviceInfo: EditableServiceInfo,
+    projectId: number,
+    projectInfo: EditableProjectInfo,
   ): Promise<{ id: number } & UpdateInfo> {
-    const service = await this.serviceRepository.findByServiceId(serviceId);
-    const { themeId, image, ...rest } = serviceInfo;
+    const project = await this.projectRepository.findByProjectId(projectId);
+    const { themeId, image, ...rest } = projectInfo;
 
-    const updateData: InsertableServiceInfo = rest;
+    const updateData: InsertableProjectInfo = rest;
 
-    if (!service) {
+    if (!project) {
       throw new ErrorResponse(commonError.notFound);
     }
 
-    if (uid !== service.user.uid) {
+    if (uid !== project.user.uid) {
       throw new ErrorResponse(commonError.forbidden);
     }
 
@@ -104,25 +104,25 @@ class ServiceService {
       }
     }
 
-    const editedService = await this.serviceRepository.updateService(service, updateData);
+    const editedProject = await this.projectRepository.updateProject(project, updateData);
 
-    const { id, createdAt, updatedAt } = editedService;
+    const { id, createdAt, updatedAt } = editedProject;
     return { id, createdAt, updatedAt };
   }
 
-  async deleteService(uid: string, serviceId: number): Promise<void> {
-    const service = await this.serviceRepository.findByServiceId(serviceId);
+  async deleteProject(uid: string, projectId: number): Promise<void> {
+    const project = await this.projectRepository.findByProjectId(projectId);
 
-    if (!service) {
+    if (!project) {
       throw new ErrorResponse(commonError.notFound);
     }
 
-    if (uid !== service.user.uid) {
+    if (uid !== project.user.uid) {
       throw new ErrorResponse(commonError.forbidden);
     }
 
-    await this.serviceRepository.deleteService(service);
+    await this.projectRepository.deleteProject(project);
   }
 }
 
-export default ServiceService;
+export default ProjectService;

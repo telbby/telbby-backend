@@ -26,5 +26,5 @@
     ],
     "import/prefer-default-export": "off"
   },
-  "ignorePatterns": ["node_modules/", "build", "**/*.js", "ormconfig.ts"]
+  "ignorePatterns": ["node_modules/", "build", "**/*.js", "ormconfig.ts", "tests/"]
 }

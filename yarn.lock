@@ -631,6 +631,11 @@
   dependencies:
     defer-to-connect "^1.0.1"
 
+"@telbby/validation@^1.1.4":
+  version "1.1.4"
+  resolved "https://registry.yarnpkg.com/@telbby/validation/-/validation-1.1.4.tgz#ee34fc47d08f746de7f5920342dea0b262a90839"
+  integrity sha512-4wQbMO4h5r/hs1pG4vEcj2GxrZasnBJyJ23vdS7QcrCKEWReojDKw2pbPAYilpi1OowKQixiAIrTXIYXvEEeog==
+
 "@tootallnate/once@1":
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/@tootallnate/once/-/once-1.1.2.tgz#ccb91445360179a04e7fe6aff78c00ffc1eeaf82"

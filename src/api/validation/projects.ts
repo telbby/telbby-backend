@@ -1,10 +1,10 @@
 import { NextFunction, Request, Response } from 'express';
 import Joi from 'joi';
 
-import { LIMIT_FILE_SIZE, VALID_IMAGE_MIMETYPE } from '../../constants/service';
+import { LIMIT_FILE_SIZE, VALID_IMAGE_MIMETYPE } from '../../constants/project';
 import ErrorResponse from '../../utils/error-response';
 
-export const serviceIdValidation = (req: Request, _res: Response, next: NextFunction): void => {
+export const projectIdValidation = (req: Request, _res: Response, next: NextFunction): void => {
   const schema = Joi.object({
     id: Joi.number().required().messages({
       'any.required': '서비스 ID를 입력해주세요',
@@ -23,7 +23,7 @@ export const serviceIdValidation = (req: Request, _res: Response, next: NextFunc
   next();
 };
 
-export const createServiceValidation = (req: Request, _res: Response, next: NextFunction): void => {
+export const createProjectValidation = (req: Request, _res: Response, next: NextFunction): void => {
   const schema = Joi.object({
     name: Joi.string().required().messages({
       'any.required': '서비스 이름을 입력해주세요',
@@ -44,7 +44,7 @@ export const createServiceValidation = (req: Request, _res: Response, next: Next
   next();
 };
 
-export const updateServiceValidation = (req: Request, _res: Response, next: NextFunction): void => {
+export const updateProjectValidation = (req: Request, _res: Response, next: NextFunction): void => {
   const schema = Joi.object({
     name: Joi.string(),
     description: Joi.string(),
